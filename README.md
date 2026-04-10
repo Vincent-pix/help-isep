@@ -64,7 +64,7 @@ help-isep/
 ## 🗄️ Base de données
 
 ### Tables principales
-
+s
 | Table | Description |
 |-------|-------------|
 | `utilisateurs` | Comptes élèves et admins |
@@ -166,22 +166,3 @@ L'application est accessible sur `http://localhost:5173`
 
 ---
 
-## 📊 Critères d'évaluation
-
-- Fonctionnalité de l'application
-- Qualité du code & bonnes pratiques
-- Ergonomie et design
-- Respect des délais
-- Qualité de la présentation
-
----
-
-## 📅 Planning
-
-| Étape | Statut |
-|-------|--------|
-| Analyse des besoins | ✅ |
-| Conception (maquettes + BDD) | ✅ |
-| Développement | 🔄 |
-| Tests et corrections | ⏳ |
-| Livraison | ⏳ |
