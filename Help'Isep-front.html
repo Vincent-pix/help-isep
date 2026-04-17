@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1070,3 +1071,1077 @@ function confetti(){
 </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help'ISEP 🎓</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --orange:#F5700A;
+  --orange-light:#FFF0E6;
+  --orange-mid:#FFDCC2;
+  --orange-dark:#C45507;
+  --blue:#1A5FA8;
+  --blue-light:#E6EFF9;
+  --blue-mid:#9ABCD8;
+  --blue-dark:#0F3D6E;
+  --white:#FFFFFF;
+  --bg:#F7F8FC;
+  --bg2:#EDEEF4;
+  --text:#14172B;
+  --text2:#5A5C72;
+  --text3:#9496AB;
+  --border:rgba(20,23,43,0.1);
+  --green:#18A058;
+  --green-light:#E6F7EE;
+  --gold:#D4A017;
+  --gold-light:#FDF6E3;
+  --radius:12px;
+  --radius-lg:18px;
+  --sidebar:230px;
+}
+html,body{height:100%;font-family:'Outfit',sans-serif;font-size:14px;color:var(--text);background:var(--bg);}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:4px;}
+
+/* ── LAYOUT ── */
+.app{display:flex;height:100vh;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar);flex-shrink:0;
+  background:var(--blue-dark);
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+.sidebar::before{
+  content:'';position:absolute;bottom:-60px;right:-40px;
+  width:180px;height:180px;border-radius:50%;
+  background:rgba(245,112,10,0.15);pointer-events:none;
+}
+.sidebar::after{
+  content:'';position:absolute;top:-30px;left:-30px;
+  width:120px;height:120px;border-radius:50%;
+  background:rgba(255,255,255,0.05);pointer-events:none;
+}
+.sb-logo{
+  padding:20px 18px 16px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.sb-logo img{height:36px;width:auto;filter:brightness(0) invert(1);}
+.sb-app-name{font-size:14px;font-weight:700;color:#fff;letter-spacing:0.02em;}
+.sb-tagline{font-size:10px;color:rgba(255,255,255,0.5);margin-top:1px;}
+
+.sb-user{
+  margin:14px 12px;
+  background:rgba(255,255,255,0.08);
+  border-radius:var(--radius);padding:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.sb-av{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--orange);color:white;
+  font-weight:700;font-size:13px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  border:2px solid rgba(255,255,255,0.3);
+}
+.sb-uname{font-size:13px;font-weight:600;color:#fff;}
+.sb-upromo{font-size:11px;color:rgba(255,255,255,0.5);}
+
+/* XP bar */
+.xp-block{margin:0 12px 14px;background:rgba(255,255,255,0.06);border-radius:var(--radius);padding:10px 12px;}
+.xp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.xp-label{font-size:11px;color:rgba(255,255,255,0.6);font-weight:500;}
+.xp-pts{font-size:12px;font-weight:700;color:var(--orange);}
+.xp-track{height:6px;background:rgba(255,255,255,0.1);border-radius:3px;}
+.xp-fill{height:6px;background:linear-gradient(90deg,var(--orange),#FF9E4A);border-radius:3px;transition:width 0.5s ease;width:68%;}
+.xp-sub{font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;text-align:right;}
+
+nav{flex:1;padding:6px 10px;overflow-y:auto;}
+.nav-sec{font-size:9px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:0.1em;text-transform:uppercase;padding:10px 8px 4px;}
+.nav-item{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 10px;border-radius:10px;
+  font-size:13px;color:rgba(255,255,255,0.6);
+  cursor:pointer;transition:all 0.15s;
+  user-select:none;position:relative;
+  margin-bottom:1px;
+}
+.nav-item:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.nav-item.active{background:var(--orange);color:#fff;font-weight:600;}
+.nav-item.active .nav-ico{opacity:1;}
+.nav-ico{width:16px;height:16px;flex-shrink:0;opacity:0.7;}
+.nav-badge{
+  margin-left:auto;background:var(--orange);color:white;
+  font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px;
+}
+.nav-item.active .nav-badge{background:rgba(255,255,255,0.3);}
+
+.sb-bottom{padding:14px 12px;border-top:1px solid rgba(255,255,255,0.1);}
+.mood{
+  background:rgba(255,255,255,0.06);border-radius:10px;padding:10px 12px;
+  display:flex;align-items:center;gap:8px;
+}
+.mood-emoji{font-size:20px;}
+.mood-text{font-size:11px;color:rgba(255,255,255,0.6);line-height:1.4;}
+.mood-text strong{color:#fff;display:block;font-size:12px;}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;}
+.topbar{
+  height:62px;background:var(--white);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;flex-shrink:0;gap:16px;
+}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.page-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.page-title{font-size:17px;font-weight:700;}
+.page-sub{font-size:12px;color:var(--text3);margin-top:1px;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.btn-primary{
+  background:var(--orange);color:white;border:none;
+  border-radius:var(--radius);padding:9px 18px;
+  font-size:13px;font-weight:600;cursor:pointer;
+  font-family:inherit;transition:all 0.15s;
+  display:flex;align-items:center;gap:6px;
+}
+.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(245,112,10,0.3);}
+.btn-sec{
+  background:var(--bg);color:var(--text2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:9px 16px;
+  font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;
+  transition:all 0.15s;
+}
+.btn-sec:hover{background:var(--bg2);}
+.content{flex:1;overflow-y:auto;padding:22px 24px;}
+.screen{display:none;}
+.screen.active{display:block;}
+
+/* ── HERO BANNERS ── */
+.hero{
+  border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:20px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(120deg,var(--blue-dark),var(--blue));
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'✨';font-size:80px;position:absolute;right:20px;top:-10px;
+  opacity:0.15;pointer-events:none;
+}
+.hero-text h2{font-size:18px;font-weight:800;color:#fff;margin-bottom:4px;}
+.hero-text p{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5;}
+.hero-stat{text-align:right;}
+.hero-stat .big{font-size:32px;font-weight:800;color:var(--orange);}
+.hero-stat .lbl{font-size:11px;color:rgba(255,255,255,0.6);}
+
+/* ── FILTERS ── */
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px;}
+.filter-btn{
+  padding:6px 14px;border-radius:20px;font-size:12.5px;
+  border:1.5px solid var(--border);background:var(--white);
+  color:var(--text2);cursor:pointer;transition:all 0.15s;font-family:inherit;
+  font-weight:500;
+}
+.filter-btn:hover{border-color:var(--orange);color:var(--orange);}
+.filter-btn.active{background:var(--orange);color:white;border-color:var(--orange);}
+
+/* ── DEMANDE CARDS ── */
+.cards-list{display:flex;flex-direction:column;gap:12px;}
+.card{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius-lg);padding:16px 20px;
+  transition:all 0.2s;cursor:default;
+}
+.card:hover{border-color:var(--orange);box-shadow:0 6px 24px rgba(245,112,10,0.1);transform:translateY(-1px);}
+.card-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.badge{font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:20px;}
+.badge-math{background:var(--blue-light);color:var(--blue-dark);}
+.badge-algo{background:#EEFBEF;color:#166534;}
+.badge-signal{background:#FDF3E3;color:#92400E;}
+.badge-phys{background:#FCE8F3;color:#9D174D;}
+.badge-urgent{background:#FEE2E2;color:#991B1B;}
+.card-time{font-size:11px;color:var(--text3);margin-left:auto;}
+.card-title{font-size:15px;font-weight:700;margin-bottom:5px;}
+.card-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px;}
+.card-foot{display:flex;align-items:center;justify-content:space-between;}
+.card-author{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text2);}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;}
+.av-o{background:var(--orange-light);color:var(--orange-dark);}
+.av-b{background:var(--blue-light);color:var(--blue-dark);}
+.av-g{background:var(--green-light);color:#166534;}
+.av-sm{width:26px;height:26px;font-size:10px;}
+.av-md{width:36px;height:36px;font-size:13px;}
+.av-lg{width:44px;height:44px;font-size:15px;}
+.btn-help{
+  background:var(--orange-light);color:var(--orange);
+  border:1.5px solid var(--orange-mid);border-radius:10px;
+  padding:6px 16px;font-size:12.5px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:all 0.15s;
+}
+.btn-help:hover{background:var(--orange);color:white;border-color:var(--orange);}
+
+/* ── TUTORS ── */
+.tutor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;}
+.tutor-card{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius-lg);padding:18px;
+  transition:all 0.2s;
+}
+.tutor-card:hover{border-color:var(--blue);box-shadow:0 6px 24px rgba(26,95,168,0.1);transform:translateY(-1px);}
+.tutor-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.tutor-info .name{font-size:14px;font-weight:700;}
+.tutor-info .promo{font-size:11px;color:var(--text3);}
+.stars{color:#F5A623;font-size:13px;margin-bottom:8px;}
+.stars-count{font-size:11px;color:var(--text3);}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.tag{font-size:11px;padding:3px 9px;background:var(--bg);border-radius:6px;color:var(--text2);font-weight:500;}
+.btn-contact{
+  width:100%;background:var(--blue-light);color:var(--blue);
+  border:none;border-radius:10px;padding:8px;
+  font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;
+  transition:all 0.15s;
+}
+.btn-contact:hover{background:var(--blue);color:white;}
+.add-card{
+  background:var(--white);border:2px dashed var(--bg2);
+  border-radius:var(--radius-lg);padding:18px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:180px;cursor:pointer;transition:all 0.15s;gap:8px;
+}
+.add-card:hover{border-color:var(--orange);}
+.add-card-icon{font-size:28px;}
+.add-card-label{font-size:13px;color:var(--text3);font-weight:500;}
+
+/* ── MESSAGES ── */
+.msg-layout{display:grid;grid-template-columns:270px 1fr;gap:16px;height:calc(100vh - 62px - 44px);}
+.conv-list{display:flex;flex-direction:column;gap:3px;overflow-y:auto;}
+.conv-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;background:var(--white);
+  border-radius:var(--radius);cursor:pointer;
+  transition:all 0.15s;border:1.5px solid transparent;
+}
+.conv-item:hover{background:var(--bg);}
+.conv-item.active{background:var(--orange-light);border-color:var(--orange-mid);}
+.conv-meta{flex:1;min-width:0;}
+.conv-from{font-size:13.5px;font-weight:600;}
+.conv-preview{font-size:12px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.conv-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.conv-time{font-size:11px;color:var(--text3);}
+.unread-dot{width:8px;height:8px;background:var(--orange);border-radius:50%;}
+.chat-panel{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-lg);display:flex;flex-direction:column;overflow:hidden;}
+.chat-top{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.chat-name-el{font-size:14px;font-weight:700;}
+.chat-sub-el{font-size:12px;color:var(--text3);}
+.online{width:8px;height:8px;background:var(--green);border-radius:50%;margin-left:auto;}
+.chat-body{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:8px;}
+.bubble{max-width:70%;padding:10px 14px;font-size:13.5px;line-height:1.55;border-radius:14px;word-break:break-word;}
+.bubble.them{background:var(--bg);color:var(--text);align-self:flex-start;border-bottom-left-radius:3px;}
+.bubble.me{background:var(--orange);color:white;align-self:flex-end;border-bottom-right-radius:3px;}
+.btime{font-size:10px;color:var(--text3);}
+.btime.r{align-self:flex-end;}
+.chat-footer{padding:12px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.chat-input{flex:1;border:1.5px solid var(--border);border-radius:24px;padding:9px 16px;font-size:13.5px;font-family:inherit;background:var(--bg);color:var(--text);outline:none;transition:border-color 0.15s;}
+.chat-input:focus{border-color:var(--orange);background:white;}
+.send-btn{width:38px;height:38px;background:var(--orange);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;}
+.send-btn:hover{background:var(--orange-dark);transform:scale(1.05);}
+
+/* ── ÉVALS ── */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px;}
+.stat-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:18px;}
+.stat-val{font-size:30px;font-weight:800;color:var(--text);}
+.stat-lbl{font-size:12px;color:var(--text3);margin-top:3px;}
+.stat-card.orange .stat-val{color:var(--orange);}
+.stat-card.blue .stat-val{color:var(--blue);}
+.section-title{font-size:13px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px;}
+.eval-list{display:flex;flex-direction:column;gap:12px;}
+.eval-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;}
+.eval-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.eval-title{font-size:14px;font-weight:700;}
+.eval-sub{font-size:12px;color:var(--text3);margin-top:2px;}
+.eval-stars{color:#F5A623;font-size:16px;}
+.crit-list{display:flex;flex-direction:column;gap:7px;}
+.crit{display:flex;align-items:center;gap:10px;}
+.crit-lbl{font-size:12px;color:var(--text2);width:90px;flex-shrink:0;}
+.bar-track{flex:1;height:6px;background:var(--bg2);border-radius:3px;}
+.bar-fill{height:6px;border-radius:3px;background:var(--orange);}
+.crit-score{font-size:12px;color:var(--text3);width:28px;text-align:right;}
+
+/* ── CERTIFICAT ── */
+.cert-hero{
+  background:linear-gradient(135deg,var(--blue-dark),var(--blue));
+  border-radius:var(--radius-lg);padding:24px;margin-bottom:22px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:relative;overflow:hidden;
+}
+.cert-hero::before{
+  content:'🏆';font-size:100px;position:absolute;right:16px;bottom:-10px;
+  opacity:0.12;pointer-events:none;
+}
+.cert-hero h2{font-size:20px;font-weight:800;color:white;margin-bottom:6px;}
+.cert-hero p{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;max-width:420px;}
+.progress-block{margin-bottom:22px;}
+.prog-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.prog-label{font-size:13px;font-weight:600;color:var(--text);}
+.prog-pts{font-size:14px;font-weight:800;color:var(--orange);}
+.prog-track{height:14px;background:var(--bg2);border-radius:7px;position:relative;overflow:hidden;}
+.prog-fill{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--orange),#FF9E4A);transition:width 1s ease;position:relative;}
+.prog-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:rgba(255,255,255,0.4);border-radius:2px;}
+.prog-milestones{display:flex;justify-content:space-between;margin-top:6px;}
+.milestone{font-size:10px;color:var(--text3);text-align:center;}
+.milestone.reached{color:var(--orange);font-weight:600;}
+.cert-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+.cert-level{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius-lg);padding:16px;text-align:center;
+  transition:all 0.2s;position:relative;overflow:hidden;
+}
+.cert-level.unlocked{border-color:var(--orange);}
+.cert-level.locked{opacity:0.55;}
+.cert-emoji{font-size:32px;margin-bottom:8px;}
+.cert-name{font-size:14px;font-weight:700;margin-bottom:3px;}
+.cert-req{font-size:11px;color:var(--text3);}
+.cert-badge{
+  position:absolute;top:10px;right:10px;
+  font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;
+}
+.cert-badge.done{background:var(--green-light);color:var(--green);}
+.cert-badge.prog{background:var(--orange-light);color:var(--orange);}
+.cert-badge.lock{background:var(--bg2);color:var(--text3);}
+.cert-actions{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:20px;}
+.cert-actions h3{font-size:15px;font-weight:700;margin-bottom:4px;}
+.cert-actions p{font-size:13px;color:var(--text2);margin-bottom:16px;}
+.cert-preview{
+  background:var(--gold-light);border:2px solid var(--gold);
+  border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px;
+  font-family:'JetBrains Mono',monospace;
+}
+.cert-preview .cert-logo{font-size:28px;margin-bottom:6px;}
+.cert-preview h4{font-size:14px;font-weight:700;color:var(--blue-dark);margin-bottom:3px;}
+.cert-preview .cert-name2{font-size:18px;font-weight:800;color:var(--orange-dark);}
+.cert-preview .cert-detail{font-size:11px;color:var(--text2);margin-top:6px;line-height:1.6;}
+.cert-preview .cert-seal{font-size:11px;color:var(--gold);margin-top:10px;font-weight:600;}
+.btn-download{
+  width:100%;background:var(--blue-dark);color:white;border:none;
+  border-radius:var(--radius);padding:12px;font-size:14px;font-weight:700;
+  cursor:pointer;font-family:inherit;transition:all 0.15s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-download:hover{background:var(--blue);transform:translateY(-1px);}
+.tasks-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.task-item{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:12px 14px;
+  display:flex;align-items:center;gap:10px;
+}
+.task-item.done{border-color:var(--green);background:var(--green-light);}
+.task-check{width:22px;height:22px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.task-check.done-c{background:var(--green);color:white;}
+.task-check.todo-c{background:var(--bg2);}
+.task-text{font-size:13px;font-weight:500;color:var(--text);}
+.task-pts{font-size:11px;color:var(--orange);font-weight:700;margin-left:auto;}
+
+/* ── IA LEA ── */
+.lea-bubble{
+  position:fixed;bottom:28px;right:28px;z-index:500;
+}
+.lea-btn{
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--orange),#FF9E4A);
+  border:3px solid white;box-shadow:0 4px 20px rgba(245,112,10,0.35);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:24px;transition:all 0.2s;
+  animation:pulse 2.5s infinite;
+}
+.lea-btn:hover{transform:scale(1.1);}
+@keyframes pulse{
+  0%,100%{box-shadow:0 4px 20px rgba(245,112,10,0.35);}
+  50%{box-shadow:0 4px 28px rgba(245,112,10,0.6);}
+}
+.lea-panel{
+  position:absolute;bottom:68px;right:0;
+  width:300px;background:white;border-radius:var(--radius-lg);
+  box-shadow:0 8px 40px rgba(0,0,0,0.15);border:1.5px solid var(--border);
+  overflow:hidden;display:none;
+}
+.lea-panel.open{display:flex;flex-direction:column;}
+.lea-head{
+  background:linear-gradient(135deg,var(--blue-dark),var(--blue));
+  padding:14px 16px;display:flex;align-items:center;gap:10px;
+}
+.lea-av{width:36px;height:36px;border-radius:50%;background:var(--orange);color:white;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;border:2px solid rgba(255,255,255,0.3);}
+.lea-hname{font-size:14px;font-weight:700;color:white;}
+.lea-hsub{font-size:11px;color:rgba(255,255,255,0.6);}
+.lea-close{margin-left:auto;background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;font-size:18px;line-height:1;}
+.lea-msgs{flex:1;max-height:250px;overflow-y:auto;padding:14px 14px 8px;}
+.lea-msg{margin-bottom:10px;}
+.lea-msg p{font-size:13px;line-height:1.55;color:var(--text);background:var(--bg);border-radius:10px;padding:9px 12px;display:inline-block;max-width:90%;}
+.lea-msg.me p{background:var(--orange);color:white;float:right;}
+.lea-msg::after{content:'';display:table;clear:both;}
+.lea-suggestions{padding:8px 14px;display:flex;flex-wrap:wrap;gap:6px;}
+.lea-sug{
+  font-size:11.5px;padding:5px 10px;background:var(--orange-light);
+  color:var(--orange);border:1px solid var(--orange-mid);
+  border-radius:20px;cursor:pointer;font-family:inherit;
+  transition:all 0.15s;font-weight:500;
+}
+.lea-sug:hover{background:var(--orange);color:white;}
+.lea-footer{padding:8px 12px;border-top:1px solid var(--border);display:flex;gap:8px;}
+.lea-input{flex:1;border:1px solid var(--border);border-radius:20px;padding:7px 13px;font-size:12.5px;font-family:inherit;outline:none;background:var(--bg);}
+.lea-send{width:30px;height:30px;background:var(--orange);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(20,23,43,0.45);display:none;align-items:center;justify-content:center;z-index:300;}
+.overlay.open{display:flex;}
+.modal{background:white;border-radius:var(--radius-lg);width:490px;max-width:95vw;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,0.15);}
+.modal h3{font-size:17px;font-weight:800;margin-bottom:18px;}
+.form-row{margin-bottom:14px;}
+label{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.04em;}
+input[type=text],textarea,select{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;font-size:13.5px;font-family:inherit;color:var(--text);outline:none;transition:border-color 0.15s;background:white;}
+input[type=text]:focus,textarea:focus,select:focus{border-color:var(--orange);}
+textarea{resize:vertical;min-height:85px;}
+.modal-btns{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;}
+.btn-ghost{background:none;border:1.5px solid var(--border);border-radius:10px;padding:9px 18px;font-size:13px;color:var(--text2);cursor:pointer;font-family:inherit;}
+.btn-ghost:hover{background:var(--bg);}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:white;padding:12px 22px;border-radius:var(--radius);font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;transition:all 0.3s;pointer-events:none;z-index:999;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── CONFETTI ── */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:9999;animation:fall 1.5s ease-in forwards;}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:0;}}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.screen.active .card,.screen.active .tutor-card,.screen.active .eval-card{animation:fadeUp 0.25s ease both;}
+.screen.active .card:nth-child(2){animation-delay:0.05s;}
+.screen.active .card:nth-child(3){animation-delay:0.1s;}
+.screen.active .card:nth-child(4){animation-delay:0.15s;}
+</style>
+</head>
+<body>
+
+<div class="app">
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <img src="/mnt/user-data/uploads/1775805238750_image.png" alt="ISEP"/>
+    <div>
+      <div class="sb-app-name">Help'ISEP</div>
+      <div class="sb-tagline">Entraide étudiante 🚀</div>
+    </div>
+  </div>
+  <div class="sb-user">
+    <div class="sb-av">LM</div>
+    <div>
+      <div class="sb-uname">Lucas Martin</div>
+      <div class="sb-upromo">2A · GSI</div>
+    </div>
+  </div>
+  <div class="xp-block">
+    <div class="xp-head">
+      <span class="xp-label">⚡ Points Helper</span>
+      <span class="xp-pts">680 pts</span>
+    </div>
+    <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
+    <div class="xp-sub">320 pts avant le certificat 🏅</div>
+  </div>
+  <nav>
+    <div class="nav-sec">Explorer</div>
+    <div class="nav-item active" data-s="demandes" onclick="go('demandes',this)">
+      <svg class="nav-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2" stroke-linecap="round"/></svg>
+      Demandes d'aide
+    </div>
+    <div class="nav-item" data-s="tuteurs" onclick="go('tuteurs',this)">
+      <svg class="nav-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="6" cy="5" r="2.5"/><path d="M2 14c0-2.8 1.8-5 4-5s4 2.2 4 5" stroke-linecap="round"/><path d="M11 4c1.1.3 2 1.3 2 2.5s-.9 2.2-2 2.5M13.5 13c1 .5 1.5 1.5 1.5 3" stroke-linecap="round"/></svg>
+      Tuteurs
+    </div>
+    <div class="nav-sec">Communauté</div>
+    <div class="nav-item" data-s="messages" onclick="go('messages',this)">
+      <svg class="nav-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="3" width="12" height="8" rx="1.5"/><path d="M2 5l6 4 6-4" stroke-linecap="round"/></svg>
+      Messages
+      <span class="nav-badge" id="msg-badge">3</span>
+    </div>
+    <div class="nav-item" data-s="evaluations" onclick="go('evaluations',this)">
+      <svg class="nav-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><polygon points="8,2 10,6 14,6.5 11,9.5 11.8,14 8,12 4.2,14 5,9.5 2,6.5 6,6"/></svg>
+      Évaluations
+    </div>
+    <div class="nav-sec">Récompenses</div>
+    <div class="nav-item" data-s="certificat" onclick="go('certificat',this)">
+      <svg class="nav-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="5" width="12" height="9" rx="1.5"/><path d="M5 5V3.5a3 3 0 016 0V5" stroke-linecap="round"/><circle cx="8" cy="10" r="1.5"/></svg>
+      Certificat Helper
+    </div>
+  </nav>
+  <div class="sb-bottom">
+    <div class="mood">
+      <div class="mood-emoji">☀️</div>
+      <div class="mood-text">
+        <strong>Continue comme ça !</strong>
+        Tu es dans le top 10% des helpers cette semaine.
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="page-icon" id="page-icon" style="background:var(--orange-light);font-size:18px;">⏰</div>
+      <div>
+        <div class="page-title" id="page-title">Demandes d'aide</div>
+        <div class="page-sub" id="page-sub">4 demandes en attente · Sois le héros de quelqu'un aujourd'hui 🦸</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-sec" onclick="openModal('modal-demande')">🔍 Filtrer</button>
+      <button class="btn-primary" id="top-btn" onclick="handleTopBtn()">✏️ Nouvelle demande</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── DEMANDES ── -->
+    <div class="screen active" id="screen-demandes">
+      <div class="hero">
+        <div class="hero-text">
+          <h2>Quelqu'un a besoin de toi ! 🙌</h2>
+          <p>Chaque aide que tu donnes, c'est +50 pts vers ton certificat. La communauté ISEP grandit grâce à toi.</p>
+        </div>
+        <div class="hero-stat">
+          <div class="big">4</div>
+          <div class="lbl">demandes actives</div>
+        </div>
+      </div>
+      <div class="filters">
+        <button class="filter-btn active" onclick="filterCards(this,'all')">Toutes</button>
+        <button class="filter-btn" onclick="filterCards(this,'math')">📐 Maths</button>
+        <button class="filter-btn" onclick="filterCards(this,'algo')">💻 Algo</button>
+        <button class="filter-btn" onclick="filterCards(this,'signal')">📡 Signal</button>
+        <button class="filter-btn" onclick="filterCards(this,'phys')">⚗️ Physique</button>
+      </div>
+      <div class="cards-list" id="cards-list">
+        <div class="card" data-cat="math">
+          <div class="card-head">
+            <span class="badge badge-math">📐 Mathématiques</span>
+            <span class="badge badge-urgent">🔥 Urgent</span>
+            <span class="card-time">Il y a 20 min</span>
+          </div>
+          <div class="card-title">Aide sur les séries de Fourier</div>
+          <div class="card-desc">Je bloque sur la convergence des séries de Fourier pour les fonctions discontinues. Est-ce que quelqu'un peut m'expliquer le théorème de Dirichlet ? TD demain 8h 😬</div>
+          <div class="card-foot">
+            <div class="card-author"><div class="av av-sm av-o">SB</div>Sara Benali · 1A</div>
+            <button class="btn-help" onclick="showToast('🎉 Proposition envoyée à Sara ! +50 pts à venir');confetti()">Proposer mon aide ✨</button>
+          </div>
+        </div>
+        <div class="card" data-cat="algo">
+          <div class="card-head">
+            <span class="badge badge-algo">💻 Algorithmique</span>
+            <span class="card-time">Il y a 1h</span>
+          </div>
+          <div class="card-title">Complexité des algorithmes de tri</div>
+          <div class="card-desc">Je ne comprends pas pourquoi le tri fusion est en O(n log n) dans tous les cas. Exercice de TD demain matin et je sèche complètement sur la démo.</div>
+          <div class="card-foot">
+            <div class="card-author"><div class="av av-sm av-g">KD</div>Karim Diallo · 1A</div>
+            <button class="btn-help" onclick="showToast('🎉 Proposition envoyée à Karim ! +50 pts à venir');confetti()">Proposer mon aide ✨</button>
+          </div>
+        </div>
+        <div class="card" data-cat="signal">
+          <div class="card-head">
+            <span class="badge badge-signal">📡 Traitement du signal</span>
+            <span class="card-time">Il y a 3h</span>
+          </div>
+          <div class="card-title">Filtre passe-bas et fréquence de coupure</div>
+          <div class="card-desc">Comment choisir la fréquence de coupure d'un filtre RIF en pratique ? Le cours est un peu flou sur les critères à utiliser selon l'application.</div>
+          <div class="card-foot">
+            <div class="card-author"><div class="av av-sm av-b">MR</div>Marie Rousseau · 2A</div>
+            <button class="btn-help" onclick="showToast('🎉 Proposition envoyée à Marie ! +50 pts à venir');confetti()">Proposer mon aide ✨</button>
+          </div>
+        </div>
+        <div class="card" data-cat="phys">
+          <div class="card-head">
+            <span class="badge badge-phys">⚗️ Physique</span>
+            <span class="card-time">Il y a 5h</span>
+          </div>
+          <div class="card-title">Électrostatique — gradient et champ</div>
+          <div class="card-desc">Je mélange encore gradient du potentiel et champ électrique. Un exemple concret avec les calculs m'aiderait énormément pour réviser.</div>
+          <div class="card-foot">
+            <div class="card-author"><div class="av av-sm av-o">TL</div>Tom Lefranc · 1A</div>
+            <button class="btn-help" onclick="showToast('🎉 Proposition envoyée à Tom ! +50 pts à venir');confetti()">Proposer mon aide ✨</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TUTEURS ── -->
+    <div class="screen" id="screen-tuteurs">
+      <div class="hero" style="background:linear-gradient(120deg,var(--orange-dark),var(--orange));">
+        <div class="hero-text">
+          <h2>Des supers tuteurs t'attendent ! 🌟</h2>
+          <p>Tous ont été validés par la communauté ISEP. Note moyenne globale : <strong style="color:white;">4.8 / 5</strong></p>
+        </div>
+        <div class="hero-stat">
+          <div class="big" style="color:white;">12</div>
+          <div class="lbl">tuteurs actifs</div>
+        </div>
+      </div>
+      <div class="filters">
+        <button class="filter-btn active">Tous</button>
+        <button class="filter-btn">📐 Maths</button>
+        <button class="filter-btn">💻 Info</button>
+        <button class="filter-btn">⚗️ Physique</button>
+        <button class="filter-btn">📡 Signal</button>
+      </div>
+      <div class="tutor-grid">
+        <div class="tutor-card">
+          <div class="tutor-head">
+            <div class="av av-lg av-o">AL</div>
+            <div class="tutor-info"><div class="name">Alex Lefebvre</div><div class="promo">3A · IRS</div></div>
+          </div>
+          <div class="stars">★★★★★ <span class="stars-count">(12 avis)</span></div>
+          <div class="tags"><span class="tag">Maths</span><span class="tag">Signal</span><span class="tag">Python</span></div>
+          <button class="btn-contact" onclick="go('messages',document.querySelector('[data-s=messages]'));showToast('💬 Conversation avec Alex ouverte !')">Contacter 💬</button>
+        </div>
+        <div class="tutor-card">
+          <div class="tutor-head">
+            <div class="av av-lg av-g">NC</div>
+            <div class="tutor-info"><div class="name">Noé Chen</div><div class="promo">3A · GSI</div></div>
+          </div>
+          <div class="stars">★★★★<span style="color:var(--bg2)">★</span> <span class="stars-count">(8 avis)</span></div>
+          <div class="tags"><span class="tag">Algo</span><span class="tag">C++</span><span class="tag">BDD</span></div>
+          <button class="btn-contact" onclick="showToast('💬 Demande envoyée à Noé !')">Contacter 💬</button>
+        </div>
+        <div class="tutor-card">
+          <div class="tutor-head">
+            <div class="av av-lg av-b">IM</div>
+            <div class="tutor-info"><div class="name">Inès Moreau</div><div class="promo">2A · SRT</div></div>
+          </div>
+          <div class="stars">★★★★★ <span class="stars-count">(5 avis)</span></div>
+          <div class="tags"><span class="tag">Physique</span><span class="tag">Électronique</span></div>
+          <button class="btn-contact" onclick="showToast('💬 Demande envoyée à Inès !')">Contacter 💬</button>
+        </div>
+        <div class="tutor-card">
+          <div class="tutor-head">
+            <div class="av av-lg" style="background:#FCE8F3;color:#9D174D;width:44px;height:44px;font-size:15px;">PB</div>
+            <div class="tutor-info"><div class="name">Paul Bernard</div><div class="promo">2A · GSI</div></div>
+          </div>
+          <div class="stars">★★★★<span style="color:var(--bg2)">★</span> <span class="stars-count">(3 avis)</span></div>
+          <div class="tags"><span class="tag">Réseaux</span><span class="tag">Linux</span></div>
+          <button class="btn-contact" onclick="showToast('💬 Demande envoyée à Paul !')">Contacter 💬</button>
+        </div>
+        <div class="add-card" onclick="openModal('modal-tuteur')">
+          <div class="add-card-icon">🙋</div>
+          <div class="add-card-label">Devenir tuteur</div>
+          <div style="font-size:11px;color:var(--orange);font-weight:600;">+100 pts de bienvenue !</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MESSAGES ── -->
+    <div class="screen" id="screen-messages">
+      <div class="msg-layout">
+        <div class="conv-list">
+          <div class="conv-item active unread" onclick="selectConv(this,'Alex Lefebvre','Séries de Fourier','alex')">
+            <div class="av av-sm av-o" style="width:34px;height:34px;font-size:12px;flex-shrink:0;">AL</div>
+            <div class="conv-meta"><div class="conv-from">Alex Lefebvre</div><div class="conv-preview">Dispo demain à 14h en salle C204 ?</div></div>
+            <div class="conv-right"><span class="conv-time">10:32</span><div class="unread-dot"></div></div>
+          </div>
+          <div class="conv-item unread" onclick="selectConv(this,'Noé Chen','Algorithmique','noe')">
+            <div class="av av-sm av-g" style="width:34px;height:34px;font-size:12px;flex-shrink:0;">NC</div>
+            <div class="conv-meta"><div class="conv-from">Noé Chen</div><div class="conv-preview">Voici les ressources que j'avais...</div></div>
+            <div class="conv-right"><span class="conv-time">Hier</span><div class="unread-dot"></div></div>
+          </div>
+          <div class="conv-item" onclick="selectConv(this,'Inès Moreau','Physique','ines')">
+            <div class="av av-sm av-b" style="width:34px;height:34px;font-size:12px;flex-shrink:0;">IM</div>
+            <div class="conv-meta"><div class="conv-from">Inès Moreau</div><div class="conv-preview">Super, j'espère que ça t'a aidé !</div></div>
+            <div class="conv-right"><span class="conv-time">Lun</span></div>
+          </div>
+        </div>
+        <div class="chat-panel">
+          <div class="chat-top">
+            <div class="av av-sm av-o" style="width:32px;height:32px;font-size:12px;">AL</div>
+            <div><div class="chat-name-el" id="chat-name">Alex Lefebvre</div><div class="chat-sub-el" id="chat-sub">Séries de Fourier</div></div>
+            <div class="online" title="En ligne"></div>
+          </div>
+          <div class="chat-body" id="chat-body">
+            <div class="bubble them">Salut ! J'ai vu ta demande sur les séries de Fourier 👀</div>
+            <div class="btime">10:15</div>
+            <div class="bubble me">Oui je bloque vraiment sur la convergence des fonctions discontinues 😅</div>
+            <div class="btime r">10:18</div>
+            <div class="bubble them">Pas de souci, je maîtrise bien ça ! On se retrouve quand ?</div>
+            <div class="btime">10:25</div>
+            <div class="bubble me">Super ! Dès que possible 🙏</div>
+            <div class="btime r">10:28</div>
+            <div class="bubble them">Dispo demain à 14h en salle C204 ?</div>
+            <div class="btime">10:32</div>
+          </div>
+          <div class="chat-footer">
+            <input class="chat-input" id="chat-input" placeholder="Écrire un message… 😊" onkeydown="sendMsg(event)"/>
+            <button class="send-btn" onclick="sendMsgBtn()">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M2 8h12"/><path d="M10 4l6 4-6 4"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ÉVALS ── -->
+    <div class="screen" id="screen-evaluations">
+      <div class="stats-row">
+        <div class="stat-card orange"><div class="stat-val">4.8</div><div class="stat-lbl">⭐ Note moyenne reçue</div></div>
+        <div class="stat-card blue"><div class="stat-val">11</div><div class="stat-lbl">🤝 Sessions données</div></div>
+        <div class="stat-card"><div class="stat-val">680</div><div class="stat-lbl">⚡ Points accumulés</div></div>
+      </div>
+      <div class="section-title">Dernières évaluations</div>
+      <div class="eval-list">
+        <div class="eval-card">
+          <div class="eval-head">
+            <div><div class="eval-title">Session avec Alex Lefebvre</div><div class="eval-sub">📐 Séries de Fourier · 8 avril 2026</div></div>
+            <div class="eval-stars">★★★★★</div>
+          </div>
+          <div class="crit-list">
+            <div class="crit"><span class="crit-lbl">Clarté</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="crit-score">5/5</span></div>
+            <div class="crit"><span class="crit-lbl">Pédagogie</span><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div><span class="crit-score">4.5</span></div>
+            <div class="crit"><span class="crit-lbl">Ponctualité</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="crit-score">5/5</span></div>
+          </div>
+        </div>
+        <div class="eval-card">
+          <div class="eval-head">
+            <div><div class="eval-title">Session avec Noé Chen</div><div class="eval-sub">💻 Algorithmique · 3 avril 2026</div></div>
+            <div class="eval-stars">★★★★<span style="color:var(--bg2)">★</span></div>
+          </div>
+          <div class="crit-list">
+            <div class="crit"><span class="crit-lbl">Clarté</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="crit-score">4/5</span></div>
+            <div class="crit"><span class="crit-lbl">Pédagogie</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="crit-score">4/5</span></div>
+            <div class="crit"><span class="crit-lbl">Ponctualité</span><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div><span class="crit-score">4.5</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CERTIFICAT ── -->
+    <div class="screen" id="screen-certificat">
+      <div class="cert-hero">
+        <div>
+          <h2>Programme Helper ISEP 🏅</h2>
+          <p>Aide tes camarades, accumule des points et décroche un certificat officiel reconnu par l'ISEP. Ton engagement compte vraiment !</p>
+        </div>
+      </div>
+
+      <div class="section-title">Ta progression</div>
+      <div class="progress-block">
+        <div class="prog-head">
+          <span class="prog-label">⚡ 680 points sur 1000</span>
+          <span class="prog-pts">Niveau 2 — Mentor en herbe 🌱</span>
+        </div>
+        <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:68%"></div></div>
+        <div class="prog-milestones">
+          <div class="milestone reached">🥉 250 pts<br>Bronze</div>
+          <div class="milestone reached">🥈 500 pts<br>Argent</div>
+          <div class="milestone">🥇 750 pts<br>Or</div>
+          <div class="milestone">💎 1000 pts<br>Certif</div>
+        </div>
+      </div>
+
+      <div class="section-title">Les niveaux</div>
+      <div class="cert-levels">
+        <div class="cert-level unlocked">
+          <span class="cert-badge done">✓ Obtenu</span>
+          <div class="cert-emoji">🥉</div>
+          <div class="cert-name">Helper Bronze</div>
+          <div class="cert-req">250 pts · 5 sessions</div>
+        </div>
+        <div class="cert-level unlocked">
+          <span class="cert-badge done">✓ Obtenu</span>
+          <div class="cert-emoji">🥈</div>
+          <div class="cert-name">Helper Argent</div>
+          <div class="cert-req">500 pts · 10 sessions</div>
+        </div>
+        <div class="cert-level">
+          <span class="cert-badge prog">En cours</span>
+          <div class="cert-emoji">🥇</div>
+          <div class="cert-name">Helper Or</div>
+          <div class="cert-req">750 pts · 15 sessions</div>
+        </div>
+        <div class="cert-level locked">
+          <span class="cert-badge lock">🔒 Verrouillé</span>
+          <div class="cert-emoji">💎</div>
+          <div class="cert-name">Certifié ISEP</div>
+          <div class="cert-req">1000 pts · note ≥ 4.5</div>
+        </div>
+        <div class="cert-level locked">
+          <span class="cert-badge lock">🔒 Verrouillé</span>
+          <div class="cert-emoji">🌟</div>
+          <div class="cert-name">Super Helper</div>
+          <div class="cert-req">1500 pts · 30 sessions</div>
+        </div>
+        <div class="cert-level locked">
+          <span class="cert-badge lock">🔒 Verrouillé</span>
+          <div class="cert-emoji">🏆</div>
+          <div class="cert-name">Légende ISEP</div>
+          <div class="cert-req">2500 pts · top 5%</div>
+        </div>
+      </div>
+
+      <div class="section-title">Tâches pour gagner des points</div>
+      <div class="tasks-grid">
+        <div class="task-item done"><div class="task-check done-c">✓</div><div class="task-text">Compléter 5 sessions d'aide</div><div class="task-pts">+100 pts</div></div>
+        <div class="task-item done"><div class="task-check done-c">✓</div><div class="task-text">Recevoir 3 avis ≥ 4 étoiles</div><div class="task-pts">+75 pts</div></div>
+        <div class="task-item done"><div class="task-check done-c">✓</div><div class="task-text">S'inscrire comme tuteur</div><div class="task-pts">+100 pts</div></div>
+        <div class="task-item"><div class="task-check todo-c"></div><div class="task-text">Aider sur 3 matières différentes</div><div class="task-pts">+50 pts</div></div>
+        <div class="task-item"><div class="task-check todo-c"></div><div class="task-text">10 sessions consécutives</div><div class="task-pts">+150 pts</div></div>
+        <div class="task-item"><div class="task-check todo-c"></div><div class="task-text">Note moyenne ≥ 4.8 / 5</div><div class="task-pts">+75 pts</div></div>
+      </div>
+
+      <div class="cert-actions">
+        <h3>🎓 Ton certificat Helper Argent</h3>
+        <p>Tu as déjà débloqué le niveau Argent ! Voici un aperçu de ton certificat. Il sera transmis à la scolarité automatiquement une fois le niveau Certifié ISEP atteint.</p>
+        <div class="cert-preview">
+          <div class="cert-logo">🎓</div>
+          <h4>ISEP · École d'Ingénieurs du Numérique</h4>
+          <div style="font-size:12px;color:var(--text3);margin:4px 0 8px;">Certificat d'engagement étudiant</div>
+          <div class="cert-name2">Lucas Martin</div>
+          <div class="cert-detail">
+            Promotion 2A · Filière GSI<br>
+            A contribué activement à l'entraide entre étudiants<br>
+            dans le cadre du programme Help'ISEP<br>
+            <strong>Niveau : Helper Argent 🥈 — 680 points</strong>
+          </div>
+          <div class="cert-seal">✦ Validé par le bureau des études · Année 2025–2026 ✦</div>
+        </div>
+        <button class="btn-download" onclick="showToast('📥 Certificat téléchargé ! Bravo Lucas 🎉');confetti()">
+          📥 Télécharger mon certificat PDF
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ── MODALE DEMANDE ── -->
+<div class="overlay" id="modal-demande" onclick="closeOut(event,'modal-demande')">
+  <div class="modal">
+    <h3>✏️ Nouvelle demande d'aide</h3>
+    <div class="form-row"><label>Matière</label>
+      <select><option>📐 Mathématiques</option><option>💻 Algorithmique</option><option>📡 Traitement du signal</option><option>⚗️ Physique</option><option>🌐 Réseaux</option><option>Autre</option></select>
+    </div>
+    <div class="form-row"><label>Titre</label><input type="text" placeholder="Ex : Aide sur les intégrales de contour"/></div>
+    <div class="form-row"><label>Description</label><textarea placeholder="Décris ton problème en détail. Plus c'est précis, plus tu seras aidé vite !"></textarea></div>
+    <div class="form-row"><label>Urgence</label>
+      <select><option>🟢 Pas urgent — dans la semaine</option><option>🟡 Modéré — dans 48h</option><option>🔥 Urgent — aujourd'hui !</option></select>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-ghost" onclick="closeModal('modal-demande')">Annuler</button>
+      <button class="btn-primary" onclick="closeModal('modal-demande');showToast('🚀 Demande publiée ! Un helper va arriver.')">Publier la demande</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODALE TUTEUR ── -->
+<div class="overlay" id="modal-tuteur" onclick="closeOut(event,'modal-tuteur')">
+  <div class="modal">
+    <h3>🙋 Devenir tuteur Helper</h3>
+    <div class="form-row"><label>Matières maîtrisées</label><input type="text" placeholder="Ex : Maths, Signal, Python…"/></div>
+    <div class="form-row"><label>Disponibilités</label><input type="text" placeholder="Ex : Lundi et mercredi après-midi"/></div>
+    <div class="form-row"><label>Présentation</label><textarea placeholder="Dis-nous qui tu es et pourquoi tu veux aider tes camarades 😊"></textarea></div>
+    <div class="modal-btns">
+      <button class="btn-ghost" onclick="closeModal('modal-tuteur')">Annuler</button>
+      <button class="btn-primary" onclick="closeModal('modal-tuteur');showToast('🎉 Bienvenue dans l\'équipe ! +100 pts offerts 🚀');confetti()">S'inscrire comme tuteur</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── LEA IA ── -->
+<div class="lea-bubble">
+  <button class="lea-btn" onclick="toggleLea()" title="Léa — Assistante IA">🤖</button>
+  <div class="lea-panel" id="lea-panel">
+    <div class="lea-head">
+      <div class="lea-av">🤖</div>
+      <div>
+        <div class="lea-hname">Léa</div>
+        <div class="lea-hsub">Assistante Help'ISEP · toujours là 💪</div>
+      </div>
+      <button class="lea-close" onclick="toggleLea()">×</button>
+    </div>
+    <div class="lea-msgs" id="lea-msgs">
+      <div class="lea-msg"><p>Salut ! Moi c'est Léa 👋 Je suis ton assistante Help'ISEP. Je peux t'aider à trouver un tuteur, comprendre comment gagner des points ou répondre à tes questions sur l'appli !</p></div>
+    </div>
+    <div class="lea-suggestions">
+      <button class="lea-sug" onclick="leaReply('Comment gagner des points ?')">⚡ Points ?</button>
+      <button class="lea-sug" onclick="leaReply('Comment obtenir le certificat ?')">🎓 Certificat</button>
+      <button class="lea-sug" onclick="leaReply('Trouver un tuteur en maths')">📐 Tuteur maths</button>
+    </div>
+    <div class="lea-footer">
+      <input class="lea-input" id="lea-input" placeholder="Pose ta question…" onkeydown="leaSend(event)"/>
+      <button class="lea-send" onclick="leaSendBtn()">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M2 8h12"/><path d="M10 4l6 4-6 4"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const screens={
+  demandes:{title:"Demandes d'aide",sub:"4 demandes en attente · Sois le héros de quelqu'un aujourd'hui 🦸",icon:"⏰",bg:"var(--orange-light)",btn:"✏️ Nouvelle demande"},
+  tuteurs:{title:"Tuteurs disponibles",sub:"12 helpers prêts à t'aider · Tous évalués par la communauté 🌟",icon:"🌟",bg:"var(--orange-light)",btn:"🙋 Devenir tuteur"},
+  messages:{title:"Messages",sub:"3 conversations actives · Quelqu'un t'attend peut-être 💬",icon:"💬",bg:"var(--blue-light)",btn:"✉️ Nouveau message"},
+  evaluations:{title:"Mes évaluations",sub:"Tu déchires ! Note moyenne 4.8 · Continue comme ça 🔥",icon:"⭐",bg:"#FDF6E3",btn:"📊 Voir stats"},
+  certificat:{title:"Certificat Helper",sub:"680 / 1000 pts · Plus que 320 pts pour le certif officiel 🏅",icon:"🏅",bg:"var(--gold-light)",btn:"📥 Télécharger"}
+};
+
+function go(id,el){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  else document.querySelector('[data-s='+id+']').classList.add('active');
+  const s=screens[id];
+  document.getElementById('page-title').textContent=s.title;
+  document.getElementById('page-sub').textContent=s.sub;
+  document.getElementById('page-icon').textContent=s.icon;
+  document.getElementById('page-icon').style.background=s.bg;
+  document.getElementById('top-btn').textContent=s.btn;
+}
+
+function handleTopBtn(){
+  const a=document.querySelector('.nav-item.active').dataset.s;
+  if(a==='demandes') openModal('modal-demande');
+  else if(a==='tuteurs') openModal('modal-tuteur');
+  else if(a==='certificat'){showToast('📥 Téléchargement du certificat…');confetti();}
+  else showToast('✨ Fonctionnalité bientôt disponible !');
+}
+
+function filterCards(btn,cat){
+  document.querySelectorAll('#screen-demandes .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card[data-cat]').forEach(c=>{
+    c.style.display=(cat==='all'||c.dataset.cat===cat)?'':'none';
+  });
+}
+
+let toastT;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function closeOut(e,id){if(e.target===e.currentTarget)closeModal(id);}
+
+const convData={
+  alex:[
+    {me:false,t:"Salut ! J'ai vu ta demande sur les séries de Fourier 👀",time:"10:15"},
+    {me:true,t:"Oui je bloque vraiment sur la convergence des fonctions discontinues 😅",time:"10:18"},
+    {me:false,t:"Pas de souci, je maîtrise bien ça ! On se retrouve quand ?",time:"10:25"},
+    {me:true,t:"Super ! Dès que possible 🙏",time:"10:28"},
+    {me:false,t:"Dispo demain à 14h en salle C204 ?",time:"10:32"},
+  ],
+  noe:[
+    {me:false,t:"Hello ! J'ai vu ta question sur le tri fusion 🤓",time:"Hier 14:02"},
+    {me:true,t:"Oui la démo de complexité me résiste encore...",time:"Hier 14:05"},
+    {me:false,t:"Voici les ressources que j'avais préparées pour toi 📚",time:"Hier 14:10"},
+  ],
+  ines:[
+    {me:false,t:"La session s'est bien passée ? Tu as tout compris ?",time:"Lun 18:00"},
+    {me:true,t:"Oui vraiment merci infiniment Inès ! 🙌",time:"Lun 18:05"},
+    {me:false,t:"Super, j'espère que ça t'a aidé pour l'exam ! 😊",time:"Lun 18:07"},
+  ]
+};
+
+function selectConv(el,name,sub,key){
+  document.querySelectorAll('.conv-item').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');el.classList.remove('unread');
+  const dot=el.querySelector('.unread-dot');if(dot)dot.remove();
+  document.getElementById('chat-name').textContent=name;
+  document.getElementById('chat-sub').textContent=sub;
+  const body=document.getElementById('chat-body');body.innerHTML='';
+  (convData[key]||[]).forEach(m=>{
+    const b=document.createElement('div');b.className='bubble '+(m.me?'me':'them');b.textContent=m.t;body.appendChild(b);
+    const ti=document.createElement('div');ti.className='btime'+(m.me?' r':'');ti.textContent=m.time;body.appendChild(ti);
+  });
+  body.scrollTop=body.scrollHeight;
+  const rem=document.querySelectorAll('.conv-item.unread').length;
+  const badge=document.getElementById('msg-badge');
+  badge.textContent=rem;badge.style.display=rem?'':'none';
+}
+
+function sendMsg(e){if(e.key==='Enter')sendMsgBtn();}
+function sendMsgBtn(){
+  const inp=document.getElementById('chat-input');
+  const txt=inp.value.trim();if(!txt)return;
+  const body=document.getElementById('chat-body');
+  const b=document.createElement('div');b.className='bubble me';b.textContent=txt;body.appendChild(b);
+  const now=new Date();
+  const ti=document.createElement('div');ti.className='btime r';ti.textContent=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');body.appendChild(ti);
+  inp.value='';body.scrollTop=body.scrollHeight;
+}
+
+// ── LEA ──
+const leaReplies={
+  'comment gagner des points ?':"Chaque session d'aide = +50 pts ⚡ Reçois des avis 5★ pour des bonus ! Tu peux aussi gagner des points en t'inscrivant tuteur (+100 pts), en aidant sur plusieurs matières, ou en étant régulier 🔥",
+  'comment obtenir le certificat ?':"Le certificat Certifié ISEP se débloque à 1000 pts avec une note moyenne ≥ 4.5 ⭐ Tu es à 680 pts, encore 320 à aller ! À ce rythme, tu l'auras dans environ 6 sessions 🎓",
+  'trouver un tuteur en maths':"Il y a 3 tuteurs dispo en maths : Alex Lefebvre (5★), Sara Amara (4.8★) et Marc Dupont (4.6★). Alex est le mieux noté ! Tu veux que j'ouvre la conversation directement ? 📐",
+};
+const leaDefault=[
+  "Bonne question ! 😊 Je vais chercher ça pour toi... En attendant, tu peux aller voir la section concernée dans l'appli !",
+  "Je ne suis pas encore sûre à 100%, mais la section Tuteurs ou Certificat devrait répondre à ça ! 💡",
+  "Hmm, laisse-moi réfléchir... Tu peux aussi poser la question directement à un tuteur via les messages ! 💬"
+];
+let leaDefaultIdx=0;
+
+function toggleLea(){document.getElementById('lea-panel').classList.toggle('open');}
+function leaSend(e){if(e.key==='Enter')leaSendBtn();}
+function leaSendBtn(){
+  const inp=document.getElementById('lea-input');
+  const txt=inp.value.trim();if(!txt)return;
+  addLeaMsg(txt,true);inp.value='';
+  setTimeout(()=>{
+    const key=txt.toLowerCase().replace(/[?!]/g,'');
+    const rep=leaReplies[key]||(leaDefault[leaDefaultIdx++%leaDefault.length]);
+    addLeaMsg(rep,false);
+  },600);
+}
+function leaReply(q){
+  addLeaMsg(q,true);
+  setTimeout(()=>{
+    const key=q.toLowerCase().replace(/[?!]/g,'');
+    const rep=leaReplies[key]||leaDefault[0];
+    addLeaMsg(rep,false);
+  },600);
+}
+function addLeaMsg(txt,isMe){
+  const msgs=document.getElementById('lea-msgs');
+  const d=document.createElement('div');d.className='lea-msg'+(isMe?' me':'');
+  const p=document.createElement('p');p.textContent=txt;d.appendChild(p);
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+}
+
+// ── CONFETTI ──
+function confetti(){
+  const colors=['#F5700A','#1A5FA8','#FFD166','#06D6A0','#FF6B9D'];
+  for(let i=0;i<28;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${colors[i%colors.length]};transform:rotate(${Math.random()*360}deg);animation-delay:${Math.random()*0.5}s;animation-duration:${1.2+Math.random()*0.8}s;`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2000);
+  }
+}
+</script>
+</body>
+</html>
+>>>>>>> 072cbbcb8e4529d24e6e3af4f31a95c8e49453a1

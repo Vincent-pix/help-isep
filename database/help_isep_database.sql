@@ -224,6 +224,8 @@ SELECT
     d.description,
     d.urgence,
     d.date_creation,
+    d.statut,
+    m.id AS matiere_id,
     m.nom AS matiere,
     u.nom AS eleve_nom,
     u.prenom AS eleve_prenom
