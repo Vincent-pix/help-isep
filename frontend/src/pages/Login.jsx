@@ -1,79 +1,97 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import "../styles/auth.css";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import api from '../services/api';
+import './Login.css';
 
 export default function Login() {
-  const navigate = useNavigate();
-  const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [mode, setMode] = useState('login'); // 'login' | 'register'
+  const [form, setForm] = useState({ nom: '', prenom: '', email: '', mot_de_passe: '' });
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+  const handle = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const submit = async () => {
+    setError('');
     setLoading(true);
-
     try {
-      if (!email || !password) {
-        setError("Remplis tous les champs.");
-        return;
+      if (mode === 'register') {
+        await api.post('/auth/register', form);
+        setMode('login');
+        setError('');
+        alert('Compte créé ! Tu peux maintenant te connecter.');
+      } else {
+        const res = await api.post('/auth/login', {
+          email: form.email,
+          mot_de_passe: form.mot_de_passe,
+        });
+        login(res.data.user, res.data.token);
+        navigate('/app');
       }
-
-      await login(email, password);
-      navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Erreur de connexion");
+      setError(err.response?.data?.message || 'Une erreur est survenue');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="auth-screen">
-      <div className="auth-box">
-        <div className="auth-logo">
-          <h1>Help'<span>ISEP</span></h1>
-          <p>Tuteurs & Entraide</p>
+    <div className="login-page">
+      <div className="login-card">
+        <div className="login-logo">
+          <div className="login-logo-icon">🎓</div>
+          <div>
+            <div className="login-appname">Help'ISEP</div>
+            <div className="login-tagline">Entraide étudiante</div>
+          </div>
         </div>
 
-        {error && <div className="auth-err" style={{ display: "block" }}>{error}</div>}
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="ton@email.isep.fr"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Mot de passe</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••"
-            />
-          </div>
-
-          <button type="submit" className="btn-full" disabled={loading}>
-            {loading ? "Connexion..." : "Se connecter"}
+        <div className="login-tabs">
+          <button
+            className={`login-tab ${mode === 'login' ? 'active' : ''}`}
+            onClick={() => { setMode('login'); setError(''); }}
+          >
+            Connexion
           </button>
-        </form>
+          <button
+            className={`login-tab ${mode === 'register' ? 'active' : ''}`}
+            onClick={() => { setMode('register'); setError(''); }}
+          >
+            Inscription
+          </button>
+        </div>
 
-        <div style={{ marginTop: "16px", textAlign: "center" }}>
-          <p style={{ fontSize: "13px", color: "var(--text3)" }}>
-            Pas de compte ?{" "}
-            <Link to="/register" style={{ color: "var(--orange)", fontWeight: "600", textDecoration: "none" }}>
-              Créer un compte
-            </Link>
-          </p>
+        <div className="login-form">
+          {mode === 'register' && (
+            <div className="login-row-double">
+              <div className="form-row">
+                <label>Nom</label>
+                <input name="nom" placeholder="Dupont" value={form.nom} onChange={handle} />
+              </div>
+              <div className="form-row">
+                <label>Prénom</label>
+                <input name="prenom" placeholder="Alice" value={form.prenom} onChange={handle} />
+              </div>
+            </div>
+          )}
+          <div className="form-row">
+            <label>Email</label>
+            <input name="email" type="email" placeholder="alice@isep.fr" value={form.email} onChange={handle} />
+          </div>
+          <div className="form-row">
+            <label>Mot de passe</label>
+            <input name="mot_de_passe" type="password" placeholder="••••••••" value={form.mot_de_passe} onChange={handle}
+              onKeyDown={(e) => e.key === 'Enter' && submit()} />
+          </div>
+
+          {error && <div className="login-error">{error}</div>}
+
+          <button className="btn-primary login-submit" onClick={submit} disabled={loading}>
+            {loading ? 'Chargement…' : mode === 'login' ? '🚀 Se connecter' : '✨ Créer mon compte'}
+          </button>
         </div>
       </div>
     </div>

@@ -115,4 +115,72 @@ const getMe = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getMe };
+// GET /api/auth/profile — profil complet avec stats
+const getProfile = async (req, res) => {
+  try {
+    const [user] = await db.query(
+      'SELECT id, nom, prenom, email, role, photo_profil, bio, date_inscription FROM utilisateurs WHERE id = ?',
+      [req.user.id]
+    );
+    if (user.length === 0) return res.status(404).json({ message: 'Utilisateur introuvable' });
+
+    // Si tuteur, récupérer les stats
+    let tutorStats = null;
+    const [tutorProfile] = await db.query(
+      'SELECT * FROM profils_tuteurs WHERE utilisateur_id = ?',
+      [req.user.id]
+    );
+    if (tutorProfile.length > 0) {
+      tutorStats = tutorProfile[0];
+      // Récupérer les compétences
+      const [competences] = await db.query(`
+        SELECT m.id, m.nom, ct.niveau
+        FROM competences_tuteurs ct
+        JOIN matieres m ON m.id = ct.matiere_id
+        WHERE ct.tuteur_id = ?
+        ORDER BY m.nom
+      `, [tutorProfile[0].id]);
+      tutorStats.competences = competences;
+    }
+
+    // Compter les sessions
+    const [sessions] = await db.query(
+      'SELECT COUNT(*) as total FROM sessions_aide WHERE tuteur_id = ? AND statut = "terminee"',
+      [req.user.id]
+    );
+    const sessionsCount = sessions[0]?.total || 0;
+    const points = Math.min(sessionsCount * 50, 1000);
+
+    // Moyenne des évaluations
+    const [evals] = await db.query(`
+      SELECT COUNT(*) as total, AVG(note) as moyenne
+      FROM evaluations e
+      JOIN sessions_aide s ON s.id = e.session_id
+      WHERE s.tuteur_id = ?
+    `, [req.user.id]);
+    const avgRating = evals[0]?.moyenne || null;
+
+    // Demandes de l'utilisateur
+    const [demands] = await db.query(
+      'SELECT COUNT(*) as total FROM demandes_aide WHERE eleve_id = ? AND statut != "annulee"',
+      [req.user.id]
+    );
+
+    res.json({
+      ...user[0],
+      tutorStats,
+      stats: {
+        sessionsCompletees: sessionsCount,
+        points,
+        avgRating,
+        demandesActives: demands[0]?.total || 0,
+        certificatUnlocked: points >= 1000 && (avgRating || 0) >= 4.5
+      }
+    });
+  } catch (err) {
+    console.error('Erreur getProfile :', err);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
+
+module.exports = { register, login, getMe, getProfile };
