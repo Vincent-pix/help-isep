@@ -1,0 +1,11 @@
+{
+  "name": "helpisep",
+  "version": "1.0.0",
+  "description": "Help'ISEP - Backend and Frontend",
+  "private": true,
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "build": "cd frontend && npm run build"
+  }
+}
