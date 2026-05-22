@@ -122,3 +122,20 @@ input,textarea,select{font-family:'Outfit',sans-serif;}
 .form-row input:focus,.form-row textarea:focus,.form-row select:focus{border-color:var(--orange);}
 .form-row textarea{resize:vertical;min-height:85px;}
 .modal-btns{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;}
+
+@media (max-width: 900px){
+  :root{
+    --sidebar:100%;
+  }
+  .app{
+    flex-direction:column;
+    height:auto;
+    min-height:100vh;
+    overflow:visible;
+  }
+  .toast{
+    max-width:92vw;
+    white-space:normal;
+    text-align:center;
+  }
+}

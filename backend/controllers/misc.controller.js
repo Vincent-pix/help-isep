@@ -32,6 +32,29 @@ const createMatiere = async (req, res) => {
   }
 };
 
+// POST /api/matieres/proposer — utilisateur connecté
+const proposerMatiere = async (req, res) => {
+  const { nom, description, couleur } = req.body;
+  if (!nom || !nom.trim()) {
+    return res.status(400).json({ message: 'nom requis' });
+  }
+  const normalizedNom = nom.trim();
+  try {
+    const [existing] = await db.query('SELECT id, nom FROM matieres WHERE LOWER(nom) = LOWER(?) LIMIT 1', [normalizedNom]);
+    if (existing.length > 0) {
+      return res.json({ message: 'Matière déjà existante', id: existing[0].id, created: false });
+    }
+    const [result] = await db.query(
+      'INSERT INTO matieres (nom, description, couleur) VALUES (?,?,?)',
+      [normalizedNom, description || null, couleur || '#3498db']
+    );
+    res.status(201).json({ message: 'Matière ajoutée', id: result.insertId, created: true });
+  } catch (err) {
+    console.error('Erreur proposerMatiere :', err);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
+
 // ── NOTIFICATIONS ─────────────────────────────────────────
 
 // GET /api/notifications — notifications de l'utilisateur connecté
@@ -66,4 +89,4 @@ const marquerLues = async (req, res) => {
   }
 };
 
-module.exports = { getMatieres, createMatiere, getNotifications, marquerLues };
+module.exports = { getMatieres, createMatiere, proposerMatiere, getNotifications, marquerLues };

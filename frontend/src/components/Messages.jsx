@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 import './Demandes.css';
 
 export default function Messages() {
+  const { user } = useAuth();
   const [conversations, setConversations] = useState([]);
   const [activeSession, setActiveSession] = useState(null);
   const [messages, setMessages]           = useState([]);
@@ -27,7 +29,32 @@ export default function Messages() {
     setLoading(true);
     try {
       const res = await api.get('/messages/conversations');
-      setConversations(res.data);
+      const list = res.data || [];
+      // Regroupe par personne pour éviter plusieurs conversations dupliquées.
+      const dedupedMap = new Map();
+      list.forEach((conv) => {
+        const current = dedupedMap.get(conv.interlocuteur_id);
+        const convTs = conv.derniere_date ? new Date(conv.derniere_date).getTime() : 0;
+        const currentTs = current?.derniere_date ? new Date(current.derniere_date).getTime() : 0;
+        if (!current || convTs >= currentTs) {
+          dedupedMap.set(conv.interlocuteur_id, conv);
+        }
+      });
+      const dedupedList = Array.from(dedupedMap.values()).sort((a, b) => {
+        const aTs = a.derniere_date ? new Date(a.derniere_date).getTime() : 0;
+        const bTs = b.derniere_date ? new Date(b.derniere_date).getTime() : 0;
+        return bTs - aTs;
+      });
+      setConversations(dedupedList);
+      const preferredSessionId = Number(localStorage.getItem('preferredSessionId'));
+      if (preferredSessionId) {
+        const preferredConv = dedupedList.find((c) => c.session_id === preferredSessionId);
+        if (preferredConv) {
+          setActiveSession(preferredConv.session_id);
+          fetchMessages(preferredConv.session_id);
+        }
+        localStorage.removeItem('preferredSessionId');
+      }
     } catch {}
     finally { setLoading(false); }
   };
@@ -124,6 +151,9 @@ export default function Messages() {
             <div className="chat-body">
               {messages.map((m, i) => (
                 <div key={i}>
+                  <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 3 }}>
+                    {m.expediteur_id === user?.id ? 'Moi' : `${m.prenom} ${m.nom}`}
+                  </div>
                   <div className={`bubble ${m.expediteur_id === activeConv.interlocuteur_id ? 'them' : 'me'}`}>
                     {m.contenu}
                   </div>

@@ -1,0 +1,14 @@
+# Configuration Deploy Now (workflow v2)
+# https://docs.ionos.space/docs/deployment-configuration/
+
+bootstrap:
+  excludes:
+    - backend
+    - database
+    - node_modules
+
+recurring:
+  excludes:
+    - backend
+    - database
+    - node_modules

@@ -16,6 +16,10 @@ const NAV = [
     icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7"><rect x="2" y="3" width="12" height="8" rx="1.5" /><path d="M2 5l6 4 6-4" strokeLinecap="round" /></svg>
   },
   {
+    id: 'mes-demandes', label: 'Mes demandes', section: null,
+    icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7"><path d="M4 2h8a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" /><path d="M5.5 5.5h5M5.5 8h5M5.5 10.5h3" strokeLinecap="round" /></svg>
+  },
+  {
     id: 'evaluations', label: 'Évaluations', section: null,
     icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7"><polygon points="8,2 10,6 14,6.5 11,9.5 11.8,14 8,12 4.2,14 5,9.5 2,6.5 6,6" /></svg>
   },

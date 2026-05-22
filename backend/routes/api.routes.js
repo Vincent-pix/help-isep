@@ -5,10 +5,10 @@ const isAdmin = require('../middleware/admin.middleware');
 
 const { getDemandes, getDemandeById, createDemande, updateStatut, getMesDemandes } = require('../controllers/demandes.controller');
 const { getAllTuteurs: getTuteurs, getMonProfil: getTuteurById, devenirTuteur, updateDisponibilite } = require('../controllers/tuteurs.controller');
-const { proposerAide, getMesSessions, updateSessionStatut, getSessionsPendantes, acceptSession, refuseSession, terminerSession } = require('../controllers/sessions.controller');
+const { proposerAide, getMesSessions, updateSessionStatut, getSessionsPendantes, acceptSession, refuseSession, terminerSession, validerAide } = require('../controllers/sessions.controller');
 const { getMessages, sendMessage, getConversations } = require('../controllers/messages.controller');
 const { createEvaluation, getEvaluationsTuteur, getMesEvaluations } = require('../controllers/evaluations.controller');
-const { getMatieres, createMatiere, getNotifications, marquerLues } = require('../controllers/misc.controller');
+const { getMatieres, createMatiere, proposerMatiere, getNotifications, marquerLues } = require('../controllers/misc.controller');
 
 // ── DEMANDES ──────────────────────────────────────────────
 router.get('/demandes',           auth, getDemandes);
@@ -31,6 +31,7 @@ router.patch('/sessions/:id/statut',  auth, updateSessionStatut);
 router.patch('/sessions/:id/accepter', auth, acceptSession);
 router.patch('/sessions/:id/refuser', auth, refuseSession);
 router.patch('/sessions/:id/terminer', auth, terminerSession);
+router.patch('/sessions/:id/valider', auth, validerAide);
 
 // ── MESSAGES ──────────────────────────────────────────────
 router.get('/messages/conversations',       auth, getConversations);
@@ -45,6 +46,7 @@ router.get('/evaluations/tuteur/:tuteurId',     auth, getEvaluationsTuteur);
 // ── MATIÈRES ──────────────────────────────────────────────
 router.get('/matieres',         auth, getMatieres);
 router.post('/matieres',        auth, isAdmin, createMatiere);
+router.post('/matieres/proposer', auth, proposerMatiere);
 
 // ── NOTIFICATIONS ─────────────────────────────────────────
 router.get('/notifications',          auth, getNotifications);

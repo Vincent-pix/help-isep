@@ -81,3 +81,32 @@ nav{flex:1;padding:6px 10px;overflow-y:auto;}
   cursor:pointer;transition:all 0.15s;width:100%;
 }
 .btn-logout:hover{background:rgba(255,255,255,0.12);color:#fff;}
+
+@media (max-width: 900px){
+  .sidebar{
+    width:100%;
+    height:auto;
+  }
+  .sb-logo{
+    padding:12px 14px;
+  }
+  .sb-user,.xp-block,.mood,.sb-tagline,.sb-bottom{
+    display:none;
+  }
+  nav{
+    padding:10px;
+    display:flex;
+    overflow-x:auto;
+    gap:8px;
+  }
+  .nav-sec{
+    display:none;
+  }
+  .nav-item{
+    margin:0;
+    white-space:nowrap;
+    background:rgba(255,255,255,0.08);
+    border-radius:999px;
+    padding:8px 12px;
+  }
+}

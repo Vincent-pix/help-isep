@@ -95,9 +95,11 @@ CREATE TABLE sessions_aide (
     demande_id      INT                 NOT NULL,
     tuteur_id       INT                 NOT NULL,  -- utilisateur (rôle eleve avec profil tuteur)
     statut          ENUM('proposee', 'acceptee', 'en_cours', 'terminee', 'refusee') NOT NULL DEFAULT 'proposee',
+    aide_validee_par_eleve BOOLEAN      NOT NULL DEFAULT FALSE,
     date_proposition DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
     date_debut      DATETIME            DEFAULT NULL,
     date_fin        DATETIME            DEFAULT NULL,
+    date_validation DATETIME            DEFAULT NULL,
     notes_tuteur    TEXT                DEFAULT NULL,
     FOREIGN KEY (demande_id) REFERENCES demandes_aide(id) ON DELETE CASCADE,
     FOREIGN KEY (tuteur_id)  REFERENCES utilisateurs(id) ON DELETE CASCADE

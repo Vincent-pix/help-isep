@@ -80,3 +80,15 @@
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;
 }
+
+@media (max-width: 900px){
+  .lea-bubble{
+    bottom:14px;
+    right:14px;
+  }
+  .lea-panel{
+    right:-6px;
+    width:min(92vw, 320px);
+    bottom:62px;
+  }
+}

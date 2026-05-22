@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar';
 import Demandes from '../components/Demandes';
 import Tuteurs from '../components/Tuteurs';
 import Messages from '../components/Messages';
+import MesDemandes from '../components/MesDemandes';
 import { Evaluations, Certificat } from '../components/EvCert';
 import Lea from '../components/Lea';
 import api from '../services/api';
@@ -12,6 +13,7 @@ const SCREENS = {
   demandes:    { title: "Demandes d'aide",     icon: '⏰', bg: 'var(--orange-light)', btn: '✏️ Nouvelle demande' },
   tuteurs:     { title: 'Tuteurs disponibles', icon: '🌟', bg: 'var(--orange-light)', btn: '🙋 Devenir tuteur' },
   messages:    { title: 'Messages',            icon: '💬', bg: 'var(--blue-light)',   btn: '✉️ Nouveau message' },
+  'mes-demandes': { title: 'Mes demandes',     icon: '📌', bg: 'var(--blue-light)',   btn: null },
   evaluations: { title: 'Mes évaluations',     icon: '⭐', bg: '#FDF6E3',             btn: '📊 Voir stats' },
   certificat:  { title: 'Certificat Helper',   icon: '🏅', bg: 'var(--gold-light)',   btn: '📥 Télécharger' },
 };
@@ -54,13 +56,17 @@ export default function Dashboard() {
           const res = await api.get('/messages/conversations');
           const nonLus = res.data.reduce((acc, c) => acc + (c.non_lus || 0), 0);
           setSubTitle(nonLus > 0 ? `${nonLus} message(s) non lu(s) 💬` : 'Toutes tes conversations 💬');
+        } else if (active === 'mes-demandes') {
+          const res = await api.get('/demandes/mes');
+          setSubTitle(`${res.data.length} demande(s) publiée(s) · Suis les réponses et valide l'aide reçue`);
         } else if (active === 'evaluations') {
           const res = await api.get('/evaluations/mes');
           const moy = res.data.stats?.moyenne;
           setSubTitle(moy ? `Note moyenne ${parseFloat(moy).toFixed(1)} ⭐ · Continue comme ça 🔥` : 'Aucune évaluation pour l\'instant');
         } else if (active === 'certificat') {
           const res = await api.get('/sessions/mes');
-          const pts = Math.min(res.data.length * 50, 1000);
+          const validated = res.data.filter((s) => s.aide_validee_par_eleve);
+          const pts = Math.min(validated.length * 50, 1000);
           setSubTitle(`${pts} / 1000 pts · Plus que ${1000 - pts} pts pour le certif officiel 🏅`);
         }
       } catch {
@@ -85,6 +91,12 @@ export default function Dashboard() {
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 2000);
     }
+  };
+
+  const openMessagesForTutor = (sessionId) => {
+    localStorage.setItem('preferredSessionId', String(sessionId));
+    setActive('messages');
+    showToast('💬 Conversation ouverte');
   };
 
   return (
@@ -123,8 +135,9 @@ export default function Dashboard() {
 
         <div className="content">
           {active === 'demandes'    && <Demandes    showToast={showToast} confetti={confetti} ref={demandesRef} />}
-          {active === 'tuteurs'     && <Tuteurs     showToast={showToast} ref={tueursRef} />}
+          {active === 'tuteurs'     && <Tuteurs     showToast={showToast} openMessagesForTutor={openMessagesForTutor} ref={tueursRef} />}
           {active === 'messages'    && <Messages    showToast={showToast} />}
+          {active === 'mes-demandes' && <MesDemandes showToast={showToast} />}
           {active === 'evaluations' && <Evaluations showToast={showToast} />}
           {active === 'certificat'  && <Certificat  showToast={showToast} confetti={confetti} />}
         </div>

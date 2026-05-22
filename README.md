@@ -125,6 +125,13 @@ npm run dev
 
 L'application est accessible sur `http://localhost:5173`
 
+### Déploiement
+
+- **Vercel + Railway (recommandé)** : [DEPLOY_VERCEL_RAILWAY.md](./DEPLOY_VERCEL_RAILWAY.md)
+- **Autres hébergeurs** : [DEPLOY_VERCEL_ET_ALTERNATIVES.md](./DEPLOY_VERCEL_ET_ALTERNATIVES.md)
+- **IONOS Deploy Now (GitHub)** — frontend : [DEPLOY_IONOS_DEPLOY_NOW.md](./DEPLOY_IONOS_DEPLOY_NOW.md)
+- **IONOS VPS** — API Node + MySQL (ou tout-en-un) : [DEPLOY_IONOS.md](./DEPLOY_IONOS.md)
+
 ---
 
 ## 🔐 Sécurité

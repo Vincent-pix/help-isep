@@ -2,7 +2,7 @@ import { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
 import api from '../services/api';
 import './Demandes.css';
 
-const TueursComponent = forwardRef(function Tuteurs({ showToast }, ref) {
+const TueursComponent = forwardRef(function Tuteurs({ showToast, openMessagesForTutor }, ref) {
   const [tuteurs, setTuteurs]     = useState([]);
   const [loading, setLoading]     = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -77,6 +77,36 @@ const TueursComponent = forwardRef(function Tuteurs({ showToast }, ref) {
 
   const avColors = ['av-b', 'av-o', 'av-g'];
 
+  const handleContactTutor = async (tuteur) => {
+    try {
+      const res = await api.get('/sessions/mes');
+      const relatedSession = (res.data || []).find(
+        (s) => s.tuteur_id === tuteur.id && ['acceptee', 'en_cours', 'terminee'].includes(s.statut)
+      );
+
+      if (!relatedSession) {
+        showToast('ℹ️ Crée ou accepte une session avec ce tuteur pour pouvoir lui écrire.');
+        return;
+      }
+
+      openMessagesForTutor?.(relatedSession.id);
+    } catch {
+      showToast('❌ Impossible d’ouvrir la conversation');
+    }
+  };
+
+  const handleAddMatiere = async () => {
+    const nom = window.prompt('Nom de la nouvelle matière');
+    if (!nom || !nom.trim()) return;
+    try {
+      await api.post('/matieres/proposer', { nom: nom.trim() });
+      await fetchMatieres();
+      showToast('✅ Matière ajoutée');
+    } catch (err) {
+      showToast(`❌ ${err.response?.data?.message || 'Erreur lors de l\'ajout'}`);
+    }
+  };
+
   return (
     <div>
       <div className="hero">
@@ -114,7 +144,7 @@ const TueursComponent = forwardRef(function Tuteurs({ showToast }, ref) {
                   <span key={m} className="tag">{m.trim()}</span>
                 ))}
               </div>
-              <button className="btn-contact" onClick={() => showToast(`💬 Fonctionnalité messages bientôt disponible !`)}>
+              <button className="btn-contact" onClick={() => handleContactTutor(t)}>
                 Contacter
               </button>
             </div>
@@ -156,6 +186,9 @@ const TueursComponent = forwardRef(function Tuteurs({ showToast }, ref) {
             ))}
             <button onClick={addCompetence} style={{ fontSize: 13, color: 'var(--orange)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 16 }}>
               + Ajouter une matière
+            </button>
+            <button onClick={handleAddMatiere} style={{ fontSize: 13, color: 'var(--blue)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 16, marginLeft: 10 }}>
+              + Créer une nouvelle matière
             </button>
             <div className="modal-btns">
               <button className="btn-ghost" onClick={() => setShowModal(false)}>Annuler</button>

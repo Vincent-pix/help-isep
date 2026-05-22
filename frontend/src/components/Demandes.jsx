@@ -87,6 +87,18 @@ const DemandesComponent = forwardRef(function Demandes({ showToast, confetti }, 
     }
   };
 
+  const handleAddMatiere = async () => {
+    const nom = window.prompt('Nom de la nouvelle matière');
+    if (!nom || !nom.trim()) return;
+    try {
+      await api.post('/matieres/proposer', { nom: nom.trim() });
+      await fetchMatieres();
+      showToast('✅ Matière ajoutée à la liste');
+    } catch (err) {
+      showToast(`❌ ${err.response?.data?.message || 'Erreur lors de l\'ajout'}`);
+    }
+  };
+
   return (
     <div>
       <div className="hero">
@@ -154,6 +166,9 @@ const DemandesComponent = forwardRef(function Demandes({ showToast, confetti }, 
               <select value={form.matiere_id} onChange={e => setForm({ ...form, matiere_id: e.target.value })}>
                 {matieres.map(m => <option key={m.id} value={m.id}>{m.nom}</option>)}
               </select>
+              <button className="btn-sec" style={{ marginTop: 8 }} onClick={handleAddMatiere}>
+                + Ajouter une matière
+              </button>
             </div>
             <div className="form-row">
               <label>Titre</label>

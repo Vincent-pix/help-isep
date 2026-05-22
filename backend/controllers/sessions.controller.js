@@ -65,7 +65,8 @@ const getMesSessions = async (req, res) => {
              u_eleve.id AS eleve_id, u_eleve.nom AS eleve_nom, u_eleve.prenom AS eleve_prenom,
              u_tuteur.id AS tuteur_id, u_tuteur.nom AS tuteur_nom, u_tuteur.prenom AS tuteur_prenom,
              (SELECT COUNT(*) FROM messages WHERE session_id = s.id AND lu = false AND expediteur_id != ?) AS messages_non_lus,
-             (SELECT note FROM evaluations WHERE session_id = s.id LIMIT 1) AS note_evaluation
+             (SELECT note FROM evaluations WHERE session_id = s.id LIMIT 1) AS note_evaluation,
+             CASE WHEN s.aide_validee_par_eleve = true THEN 50 ELSE 0 END AS points_gagnes
       FROM sessions_aide s
       JOIN demandes_aide d ON d.id = s.demande_id
       JOIN matieres m ON m.id = d.matiere_id
@@ -173,10 +174,7 @@ const acceptSession = async (req, res) => {
       return res.status(403).json({ message: 'Seul l\'élève peut accepter' });
     }
 
-    await db.query(
-      'UPDATE sessions_aide SET statut = "acceptee", date_debut = NOW() WHERE id = ?',
-      [req.params.id]
-    );
+    await db.query('UPDATE sessions_aide SET statut = "en_cours", date_debut = NOW() WHERE id = ?', [req.params.id]);
 
     res.json({ message: 'Session acceptée' });
   } catch (err) {
@@ -222,7 +220,7 @@ const terminerSession = async (req, res) => {
       SELECT s.*, d.eleve_id
       FROM sessions_aide s
       JOIN demandes_aide d ON d.id = s.demande_id
-      WHERE s.id = ? AND s.statut = 'en_cours'
+      WHERE s.id = ? AND s.statut IN ('en_cours', 'acceptee')
     `, [req.params.id]);
 
     if (session.length === 0) {
@@ -257,4 +255,52 @@ const terminerSession = async (req, res) => {
   }
 };
 
-module.exports = { proposerAide, getMesSessions, updateSessionStatut, getSessionsPendantes, acceptSession, refuseSession, terminerSession };
+// PATCH /api/sessions/:id/valider — valider une aide terminée (élève)
+const validerAide = async (req, res) => {
+  try {
+    const [session] = await db.query(`
+      SELECT s.*, d.eleve_id, d.id AS demande_id
+      FROM sessions_aide s
+      JOIN demandes_aide d ON d.id = s.demande_id
+      WHERE s.id = ?
+    `, [req.params.id]);
+
+    if (session.length === 0) {
+      return res.status(404).json({ message: 'Session introuvable' });
+    }
+
+    const current = session[0];
+
+    if (current.eleve_id !== req.user.id) {
+      return res.status(403).json({ message: 'Seul l\'élève peut valider l\'aide' });
+    }
+    if (current.statut !== 'terminee') {
+      return res.status(400).json({ message: 'La session doit être terminée avant validation' });
+    }
+    if (current.aide_validee_par_eleve) {
+      return res.status(409).json({ message: 'Cette aide est déjà validée' });
+    }
+
+    await db.query(
+      'UPDATE sessions_aide SET aide_validee_par_eleve = true, date_validation = NOW() WHERE id = ?',
+      [req.params.id]
+    );
+
+    await db.query(
+      'UPDATE demandes_aide SET statut = "resolue", date_resolution = NOW() WHERE id = ?',
+      [current.demande_id]
+    );
+
+    await db.query(
+      'INSERT INTO notifications (utilisateur_id, type, message, lien) VALUES (?,?,?,?)',
+      [current.tuteur_id, 'aide_validee', 'Ton aide a été validée : +50 points 🎉', `/sessions/${req.params.id}`]
+    );
+
+    res.json({ message: 'Aide validée, points attribués au tuteur' });
+  } catch (err) {
+    console.error('Erreur validerAide :', err);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
+
+module.exports = { proposerAide, getMesSessions, updateSessionStatut, getSessionsPendantes, acceptSession, refuseSession, terminerSession, validerAide };

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 import './Demandes.css';
 
 // ── ÉVALUATIONS ───────────────────────────────────────────────────────────────
 export function Evaluations({ showToast }) {
+  const { user } = useAuth();
   const [data, setData]     = useState({ evaluations: [], stats: {} });
   const [loading, setLoading] = useState(true);
   const [sessions, setSessions] = useState([]);
@@ -19,11 +21,13 @@ export function Evaluations({ showToast }) {
     
     api.get('/sessions/mes')
       .then(res => {
-        const terminated = res.data.filter(s => s.statut === 'terminee' && !s.note_evaluation);
+        const terminated = res.data.filter(
+          (s) => s.statut === 'terminee' && !s.note_evaluation && s.eleve_id === user?.id
+        );
         setSessions(terminated);
       })
       .catch(() => {});
-  }, []);
+  }, [user?.id]);
 
   const { evaluations, stats } = data;
 
@@ -45,7 +49,9 @@ export function Evaluations({ showToast }) {
       // Rafraîchir les données
       api.get('/evaluations/mes').then(res => setData(res.data)).catch(() => {});
       api.get('/sessions/mes').then(res => {
-        const terminated = res.data.filter(s => s.statut === 'terminee' && !s.note_evaluation);
+        const terminated = res.data.filter(
+          (s) => s.statut === 'terminee' && !s.note_evaluation && s.eleve_id === user?.id
+        );
         setSessions(terminated);
       }).catch(() => {});
     } catch (err) {
@@ -202,7 +208,8 @@ export function Certificat({ showToast, confetti }) {
     api.get('/evaluations/mes').then(res => setStats(res.data.stats || {})).catch(() => {});
   }, []);
 
-  const pts = Math.min((sessions.length * 50), 1000);
+  const validatedSessions = sessions.filter((s) => s.aide_validee_par_eleve);
+  const pts = Math.min((validatedSessions.length * 50), 1000);
   const pct = Math.round((pts / 1000) * 100);
 
   const levels = [
