@@ -38,3 +38,59 @@
     overflow:visible;
   }
 }
+
+/* ── TABLET ── */
+@media (max-width: 768px) {
+  .topbar {
+    padding: 10px;
+  }
+  
+  .page-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+  }
+  
+  .page-title {
+    font-size: 14px;
+  }
+  
+  .page-sub {
+    font-size: 10px;
+  }
+  
+  .content {
+    padding: 12px 10px 80px;
+  }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 480px) {
+  .topbar {
+    padding: 8px;
+    gap: 8px;
+  }
+  
+  .topbar-left {
+    gap: 8px;
+    width: 100%;
+  }
+  
+  .page-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  
+  .page-title {
+    font-size: 13px;
+  }
+  
+  .page-sub {
+    font-size: 9px;
+  }
+  
+  .content {
+    padding: 10px 8px 70px;
+  }
+}

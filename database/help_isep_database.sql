@@ -4,11 +4,11 @@
 -- Bachelor ISEP B1 – Projet Dev Web
 -- =====================================================
 
-CREATE DATABASE IF NOT EXISTS help_isep
+CREATE DATABASE IF NOT EXISTS railway
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
-USE help_isep;
+USE railway;
 
 -- =====================================================
 -- TABLE : utilisateurs

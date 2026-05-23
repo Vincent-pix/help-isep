@@ -10,6 +10,7 @@ export default function Messages() {
   const [messages, setMessages]           = useState([]);
   const [input, setInput]                 = useState('');
   const [loading, setLoading]             = useState(true);
+  const [showConvList, setShowConvList]   = useState(false); // Mobile: afficher/masquer liste
   const bottomRef = useRef(null);
 
   useEffect(() => { fetchConversations(); }, []);
@@ -73,6 +74,8 @@ export default function Messages() {
     setConversations(prev =>
       prev.map(c => c.session_id === conv.session_id ? { ...c, non_lus: 0 } : c)
     );
+    // Sur mobile: masquer la liste après sélection
+    setShowConvList(false);
   };
 
   const send = async () => {
@@ -98,7 +101,7 @@ export default function Messages() {
   return (
     <div className="msg-layout">
       {/* Liste des conversations */}
-      <div className="conv-list">
+      <div className={`conv-list ${showConvList ? 'show' : ''}`}>
         {loading ? (
           <div className="loading-state">Chargement…</div>
         ) : conversations.length === 0 ? (
@@ -132,19 +135,41 @@ export default function Messages() {
           <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12, color: 'var(--text3)' }}>
             <div style={{ fontSize: 40 }}>💬</div>
             <p style={{ fontSize: 13 }}>Sélectionne une conversation</p>
+            <button 
+              className="btn-primary" 
+              onClick={() => setShowConvList(!showConvList)}
+              style={{ display: 'none' }} // Visible que sur mobile via CSS
+            >
+              Afficher les conversations
+            </button>
           </div>
         ) : (
           <>
-            <div className="chat-top">
-              <div className="av av-md av-b">
-                {initials(activeConv.interlocuteur_nom, activeConv.interlocuteur_prenom)}
-              </div>
-              <div>
-                <div className="chat-name-el">
-                  {activeConv.interlocuteur_prenom} {activeConv.interlocuteur_nom}
+            <div className="chat-top" style={{ justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1 }}>
+                <div className="av av-md av-b">
+                  {initials(activeConv.interlocuteur_nom, activeConv.interlocuteur_prenom)}
                 </div>
-                <div className="chat-sub-el">{activeConv.demande_titre}</div>
+                <div>
+                  <div className="chat-name-el">
+                    {activeConv.interlocuteur_prenom} {activeConv.interlocuteur_nom}
+                  </div>
+                  <div className="chat-sub-el">{activeConv.demande_titre}</div>
+                </div>
               </div>
+              <button 
+                onClick={() => setShowConvList(!showConvList)}
+                style={{ 
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: 20,
+                  display: 'none', // Visible que sur mobile
+                  marginLeft: 'auto'
+                }}
+              >
+                ☰
+              </button>
               <div className="online" />
             </div>
 

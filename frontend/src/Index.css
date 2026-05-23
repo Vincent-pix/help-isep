@@ -139,3 +139,102 @@ input,textarea,select{font-family:'Outfit',sans-serif;}
     text-align:center;
   }
 }
+
+/* ── TABLET (768px et moins) ── */
+@media (max-width: 768px) {
+  :root {
+    --radius: 10px;
+    --radius-lg: 14px;
+  }
+  
+  .btn-primary {
+    padding: 8px 14px;
+    font-size: 12.5px;
+  }
+  
+  .modal {
+    width: 95vw;
+    padding: 20px;
+  }
+  
+  .modal h3 {
+    font-size: 16px;
+  }
+  
+  .form-row input,
+  .form-row textarea,
+  .form-row select {
+    font-size: 16px;
+    padding: 10px 12px;
+  }
+  
+  /* Évite le zoom en focus sur iOS */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* ── MOBILE (480px et moins) ── */
+@media (max-width: 480px) {
+  :root {
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+  
+  html, body {
+    font-size: 13px;
+  }
+  
+  .btn-primary {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+  
+  .btn-sec, .btn-ghost {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+  
+  .modal {
+    width: 96vw;
+    padding: 18px;
+    border-radius: 12px;
+  }
+  
+  .modal h3 {
+    font-size: 15px;
+    margin-bottom: 14px;
+  }
+  
+  .modal-btns {
+    gap: 8px;
+    margin-top: 16px;
+  }
+  
+  .form-row {
+    margin-bottom: 12px;
+  }
+  
+  .form-row label {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  
+  .form-row input,
+  .form-row textarea,
+  .form-row select {
+    padding: 9px 11px;
+    font-size: 14px;
+  }
+  
+  .form-row textarea {
+    min-height: 75px;
+  }
+  
+  .toast {
+    font-size: 12px;
+    padding: 10px 16px;
+    bottom: 16px;
+    max-width: 88vw;
+  }
+}

@@ -122,6 +122,107 @@
 .send-btn{width:38px;height:38px;background:var(--orange);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;}
 .send-btn:hover{background:var(--orange-dark);transform:scale(1.05);}
 
+/* ── RESPONSIVE MOBILE ── */
+@media (max-width: 768px) {
+  .msg-layout {
+    grid-template-columns: 1fr;
+    height: calc(100vh - 62px - 44px - 16px);
+    gap: 8px;
+  }
+  
+  .conv-list {
+    display: none;
+    position: absolute;
+    top: 62px;
+    left: 0;
+    width: 100%;
+    max-height: 50vh;
+    background: var(--white);
+    border-radius: 0;
+    z-index: 100;
+    gap: 0;
+  }
+  
+  .conv-list.show {
+    display: flex;
+  }
+  
+  .chat-panel {
+    border-radius: 0;
+    border: none;
+  }
+  
+  .chat-body {
+    padding: 12px 14px;
+    gap: 6px;
+  }
+  
+  .bubble {
+    max-width: 85%;
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+  
+  .chat-input {
+    font-size: 16px;
+    padding: 8px 14px;
+  }
+  
+  .chat-footer {
+    padding: 10px 12px;
+    gap: 6px;
+  }
+  
+  .send-btn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .chat-top {
+    padding: 12px 14px;
+  }
+  
+  /* Afficher le bouton menu sur mobile */
+  .chat-top button {
+    display: block !important;
+  }
+  
+  /* Afficher le bouton de sélection de conversation */
+  [onclick*="setShowConvList"] {
+    display: block !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .bubble {
+    max-width: 90%;
+    font-size: 12.5px;
+    padding: 8px 10px;
+  }
+  
+  .chat-body {
+    padding: 10px 12px;
+    gap: 4px;
+  }
+  
+  .conv-item {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  
+  .conv-from {
+    font-size: 12.5px;
+  }
+  
+  .conv-preview {
+    font-size: 11px;
+  }
+  
+  .chat-input {
+    font-size: 14px;
+  }
+}
+
 /* ── ÉVALS ── */
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px;}
 .stat-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:18px;}

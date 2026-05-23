@@ -143,13 +143,35 @@ const getProfile = async (req, res) => {
       tutorStats.competences = competences;
     }
 
-    // Compter les sessions
-    const [sessions] = await db.query(
-      'SELECT COUNT(*) as total FROM sessions_aide WHERE tuteur_id = ? AND statut = "terminee"',
-      [req.user.id]
-    );
-    const sessionsCount = sessions[0]?.total || 0;
-    const points = Math.min(sessionsCount * 50, 1000);
+    // Compter les sessions et calculer points basés sur les notes
+    const [sessionData] = await db.query(`
+      SELECT s.id, e.note
+      FROM sessions_aide s
+      LEFT JOIN evaluations e ON e.session_id = s.id
+      WHERE s.tuteur_id = ? AND s.statut = "terminee"
+    `, [req.user.id]);
+    
+    // Calcul des points par session:
+    // - Pas d'évaluation: 30 points (base)
+    // - Note 1-2 (mauvaise): 20 points
+    // - Note 3 (moyenne): 50 points
+    // - Note 4 (bonne): 75 points
+    // - Note 5 (excellente): 100 points
+    let points = 0;
+    sessionData.forEach(session => {
+      if (!session.note) {
+        points += 30; // Pas d'évaluation
+      } else if (session.note <= 2) {
+        points += 20; // Mauvaise note
+      } else if (session.note === 3) {
+        points += 50; // Note moyenne
+      } else if (session.note === 4) {
+        points += 75; // Bonne note
+      } else if (session.note === 5) {
+        points += 100; // Excellente note
+      }
+    });
+    const sessionsCount = sessionData.length;
 
     // Moyenne des évaluations
     const [evals] = await db.query(`
@@ -174,7 +196,7 @@ const getProfile = async (req, res) => {
         points,
         avgRating,
         demandesActives: demands[0]?.total || 0,
-        certificatUnlocked: points >= 1000 && (avgRating || 0) >= 4.5
+        certificatUnlocked: (avgRating || 0) >= 4.5 && sessionsCount >= 5
       }
     });
   } catch (err) {
