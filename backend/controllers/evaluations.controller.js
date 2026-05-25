@@ -37,25 +37,34 @@ const createEvaluation = async (req, res) => {
       return res.status(409).json({ message: 'Session déjà évaluée' });
     }
 
+    // Calculer les points selon la note
+    let points_gagnes = 30; // Par défaut
+    if (note <= 2) points_gagnes = 20;
+    else if (note === 3) points_gagnes = 50;
+    else if (note === 4) points_gagnes = 75;
+    else if (note === 5) points_gagnes = 100;
+
     // Créer l'évaluation
     await db.query(
       'INSERT INTO evaluations (session_id, note, commentaire) VALUES (?,?,?)',
       [session_id, note, commentaire || null]
     );
 
-    // Recalculer la note moyenne du tuteur
+    // Ajouter les points au tuteur et recalculer la note moyenne
     await db.query(`
       UPDATE profils_tuteurs pt
-      SET note_moyenne = (
-        SELECT AVG(e.note)
-        FROM evaluations e
-        JOIN sessions_aide s ON s.id = e.session_id
-        WHERE s.tuteur_id = pt.utilisateur_id
-      )
+      SET 
+        note_moyenne = (
+          SELECT AVG(e.note)
+          FROM evaluations e
+          JOIN sessions_aide s ON s.id = e.session_id
+          WHERE s.tuteur_id = pt.utilisateur_id
+        ),
+        points_total = points_total + ?
       WHERE utilisateur_id = ?
-    `, [session[0].tuteur_id]);
+    `, [points_gagnes, session[0].tuteur_id]);
 
-    res.status(201).json({ message: 'Évaluation enregistrée' });
+    res.status(201).json({ message: 'Évaluation enregistrée', points_gagnes });
   } catch (err) {
     console.error('Erreur createEvaluation :', err);
     res.status(500).json({ message: 'Erreur serveur' });

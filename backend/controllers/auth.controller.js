@@ -119,85 +119,39 @@ const getMe = async (req, res) => {
 const getProfile = async (req, res) => {
   try {
     const [user] = await db.query(
-      'SELECT id, nom, prenom, email, role, photo_profil, bio, date_inscription FROM utilisateurs WHERE id = ?',
+      'SELECT id, nom, prenom, email, role, photo_profil, bio, telephone, date_inscription FROM utilisateurs WHERE id = ?',
       [req.user.id]
     );
     if (user.length === 0) return res.status(404).json({ message: 'Utilisateur introuvable' });
 
     // Si tuteur, récupérer les stats
     let tutorStats = null;
+    let points_total = 0;
+    let note_moyenne = null;
+    let sessions_count = 0;
+
     const [tutorProfile] = await db.query(
-      'SELECT * FROM profils_tuteurs WHERE utilisateur_id = ?',
+      'SELECT points_total, note_moyenne FROM profils_tuteurs WHERE utilisateur_id = ?',
       [req.user.id]
     );
     if (tutorProfile.length > 0) {
-      tutorStats = tutorProfile[0];
-      // Récupérer les compétences
-      const [competences] = await db.query(`
-        SELECT m.id, m.nom, ct.niveau
-        FROM competences_tuteurs ct
-        JOIN matieres m ON m.id = ct.matiere_id
-        WHERE ct.tuteur_id = ?
-        ORDER BY m.nom
-      `, [tutorProfile[0].id]);
-      tutorStats.competences = competences;
+      points_total = tutorProfile[0].points_total || 0;
+      note_moyenne = tutorProfile[0].note_moyenne || 0;
+      
+      // Compter les sessions terminées
+      const [sessionCount] = await db.query(
+        'SELECT COUNT(*) as total FROM sessions_aide WHERE tuteur_id = ? AND statut = "terminee"',
+        [req.user.id]
+      );
+      sessions_count = sessionCount[0]?.total || 0;
     }
-
-    // Compter les sessions et calculer points basés sur les notes
-    const [sessionData] = await db.query(`
-      SELECT s.id, e.note
-      FROM sessions_aide s
-      LEFT JOIN evaluations e ON e.session_id = s.id
-      WHERE s.tuteur_id = ? AND s.statut = "terminee"
-    `, [req.user.id]);
-    
-    // Calcul des points par session:
-    // - Pas d'évaluation: 30 points (base)
-    // - Note 1-2 (mauvaise): 20 points
-    // - Note 3 (moyenne): 50 points
-    // - Note 4 (bonne): 75 points
-    // - Note 5 (excellente): 100 points
-    let points = 0;
-    sessionData.forEach(session => {
-      if (!session.note) {
-        points += 30; // Pas d'évaluation
-      } else if (session.note <= 2) {
-        points += 20; // Mauvaise note
-      } else if (session.note === 3) {
-        points += 50; // Note moyenne
-      } else if (session.note === 4) {
-        points += 75; // Bonne note
-      } else if (session.note === 5) {
-        points += 100; // Excellente note
-      }
-    });
-    const sessionsCount = sessionData.length;
-
-    // Moyenne des évaluations
-    const [evals] = await db.query(`
-      SELECT COUNT(*) as total, AVG(note) as moyenne
-      FROM evaluations e
-      JOIN sessions_aide s ON s.id = e.session_id
-      WHERE s.tuteur_id = ?
-    `, [req.user.id]);
-    const avgRating = evals[0]?.moyenne || null;
-
-    // Demandes de l'utilisateur
-    const [demands] = await db.query(
-      'SELECT COUNT(*) as total FROM demandes_aide WHERE eleve_id = ? AND statut != "annulee"',
-      [req.user.id]
-    );
 
     res.json({
       ...user[0],
-      tutorStats,
-      stats: {
-        sessionsCompletees: sessionsCount,
-        points,
-        avgRating,
-        demandesActives: demands[0]?.total || 0,
-        certificatUnlocked: (avgRating || 0) >= 4.5 && sessionsCount >= 5
-      }
+      points_total,
+      note_moyenne: note_moyenne ? parseFloat(note_moyenne).toFixed(1) : 0,
+      sessions_count,
+      certificatUnlocked: (note_moyenne || 0) >= 4.5 && sessions_count >= 5
     });
   } catch (err) {
     console.error('Erreur getProfile :', err);
@@ -205,4 +159,42 @@ const getProfile = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getMe, getProfile };
+// PUT /api/auth/profile — mettre à jour le profil
+const updateProfile = async (req, res) => {
+  try {
+    const { nom, prenom, email, bio, telephone } = req.body;
+
+    // Vérifier si l'email est déjà utilisé par quelqu'un d'autre
+    if (email && email !== req.body.currentEmail) {
+      const [existing] = await db.query(
+        'SELECT id FROM utilisateurs WHERE email = ? AND id != ?',
+        [email, req.user.id]
+      );
+      if (existing.length > 0) {
+        return res.status(409).json({ message: 'Cet email est déjà utilisé' });
+      }
+    }
+
+    // Mettre à jour l'utilisateur
+    await db.query(
+      'UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, bio = ?, telephone = ? WHERE id = ?',
+      [nom, prenom, email, bio || null, telephone || null, req.user.id]
+    );
+
+    // Récupérer le profil mis à jour
+    const [user] = await db.query(
+      'SELECT id, nom, prenom, email, role, photo_profil, bio, telephone FROM utilisateurs WHERE id = ?',
+      [req.user.id]
+    );
+
+    res.json({
+      message: 'Profil mis à jour',
+      user: user[0]
+    });
+  } catch (err) {
+    console.error('Erreur updateProfile :', err);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
+
+module.exports = { register, login, getMe, getProfile, updateProfile };

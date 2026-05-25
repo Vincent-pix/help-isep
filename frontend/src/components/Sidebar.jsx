@@ -27,6 +27,10 @@ const NAV = [
     id: 'certificat', label: 'Certificat Helper', section: 'Récompenses',
     icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7"><rect x="2" y="5" width="12" height="9" rx="1.5" /><path d="M5 5V3.5a3 3 0 016 0V5" strokeLinecap="round" /><circle cx="8" cy="10" r="1.5" /></svg>
   },
+  {
+    id: 'profil', label: 'Mon Profil', section: 'Compte',
+    icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7"><circle cx="8" cy="5" r="2.5" /><path d="M2 14c0-2.8 1.8-5 4-5h4c2.2 0 4 2.2 4 5" strokeLinecap="round" /></svg>
+  },
 ];
 
 export default function Sidebar({ active, onNav, notifCount = 0 }) {

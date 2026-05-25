@@ -5,7 +5,7 @@ import Tuteurs from '../components/Tuteurs';
 import Messages from '../components/Messages';
 import MesDemandes from '../components/MesDemandes';
 import { Evaluations, Certificat } from '../components/EvCert';
-import Lea from '../components/Lea';
+import Profile from './Profile';
 import api from '../services/api';
 import './Dashboard.css';
 
@@ -16,6 +16,7 @@ const SCREENS = {
   'mes-demandes': { title: 'Mes demandes',     icon: '📌', bg: 'var(--blue-light)',   btn: null },
   evaluations: { title: 'Mes évaluations',     icon: '⭐', bg: '#FDF6E3',             btn: '📊 Voir stats' },
   certificat:  { title: 'Certificat Helper',   icon: '🏅', bg: 'var(--gold-light)',   btn: '📥 Télécharger' },
+  profil:      { title: 'Mon Profil',          icon: '👤', bg: 'var(--bg)',           btn: null },
 };
 
 export default function Dashboard() {
@@ -140,10 +141,10 @@ export default function Dashboard() {
           {active === 'mes-demandes' && <MesDemandes showToast={showToast} />}
           {active === 'evaluations' && <Evaluations showToast={showToast} />}
           {active === 'certificat'  && <Certificat  showToast={showToast} confetti={confetti} />}
+          {active === 'profil'      && <Profile     />}
         </div>
       </div>
 
-      <Lea />
       <div className={`toast ${toastVisible ? 'show' : ''}`}>{toast}</div>
     </div>
   );

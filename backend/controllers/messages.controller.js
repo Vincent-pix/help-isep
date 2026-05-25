@@ -109,4 +109,29 @@ const getConversations = async (req, res) => {
   }
 };
 
-module.exports = { getMessages, sendMessage, getConversations };
+// GET /api/messages/contacts — liste unique des personnes contactées avec dernière date
+const getContacts = async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT DISTINCT
+        u.id AS utilisateur_id,
+        u.nom,
+        u.prenom,
+        MAX(m.date_envoi) AS dernier_message
+      FROM messages m
+      JOIN sessions_aide s ON s.id = m.session_id
+      JOIN demandes_aide d ON d.id = s.demande_id
+      JOIN utilisateurs u ON u.id = IF(d.eleve_id = ?, s.tuteur_id, d.eleve_id)
+      WHERE d.eleve_id = ? OR s.tuteur_id = ?
+      GROUP BY u.id
+      ORDER BY MAX(m.date_envoi) DESC
+    `, [req.user.id, req.user.id, req.user.id]);
+
+    res.json(rows);
+  } catch (err) {
+    console.error('Erreur getContacts :', err);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
+
+module.exports = { getMessages, sendMessage, getConversations, getContacts };

@@ -6,7 +6,7 @@ const isAdmin = require('../middleware/admin.middleware');
 const { getDemandes, getDemandeById, createDemande, updateStatut, getMesDemandes } = require('../controllers/demandes.controller');
 const { getAllTuteurs: getTuteurs, getMonProfil: getTuteurById, devenirTuteur, updateDisponibilite } = require('../controllers/tuteurs.controller');
 const { proposerAide, getMesSessions, updateSessionStatut, getSessionsPendantes, acceptSession, refuseSession, terminerSession, validerAide } = require('../controllers/sessions.controller');
-const { getMessages, sendMessage, getConversations } = require('../controllers/messages.controller');
+const { getMessages, sendMessage, getConversations, getContacts } = require('../controllers/messages.controller');
 const { createEvaluation, getEvaluationsTuteur, getMesEvaluations } = require('../controllers/evaluations.controller');
 const { getMatieres, createMatiere, proposerMatiere, getNotifications, marquerLues } = require('../controllers/misc.controller');
 
@@ -35,6 +35,7 @@ router.patch('/sessions/:id/valider', auth, validerAide);
 
 // ── MESSAGES ──────────────────────────────────────────────
 router.get('/messages/conversations',       auth, getConversations);
+router.get('/messages/contacts',            auth, getContacts);
 router.get('/messages/:sessionId',          auth, getMessages);
 router.post('/messages/:sessionId',         auth, sendMessage);
 
