@@ -237,7 +237,7 @@ export default function MesDemandes({ showToast }) {
                 {canValidate && (
                   <div className="card-foot" style={{ marginTop: 10 }}>
                     <button className="btn-help" onClick={() => validateHelp(latestSession.id)}>
-                      Valider l'aide (+50 pts tuteur)
+                      Valider l'aide (points selon ta note)
                     </button>
                   </div>
                 )}
@@ -295,7 +295,7 @@ export default function MesDemandes({ showToast }) {
               {
                 id: 'studentValidation',
                 label: 'Validation élève',
-                hint: session.aide_validee_par_eleve ? 'Validée (+50 pts)' : 'En attente de validation',
+                hint: session.aide_validee_par_eleve ? 'Validée (points selon ta note)' : 'En attente de validation',
                 done: Boolean(session.aide_validee_par_eleve),
                 active: session.statut === 'terminee' && !session.aide_validee_par_eleve,
               },
@@ -317,7 +317,7 @@ export default function MesDemandes({ showToast }) {
                 <div className="card-desc">{session.demande_desc}</div>
                 <div style={{ marginTop: 10, fontSize: 12, color: 'var(--text2)' }}>
                   Élève: {session.eleve_prenom} {session.eleve_nom}
-                  {session.aide_validee_par_eleve && ' · Validée par l\'élève ✅ (+50 pts)'}
+                  {session.aide_validee_par_eleve && ' · Validée par l\'élève ✅ (points selon ta note)'}
                 </div>
                 <Timeline steps={tutorSteps} />
                 {canConfirm && (

@@ -64,7 +64,7 @@ const DemandesComponent = forwardRef(function Demandes({ showToast, confetti }, 
   const handleProposer = async (d) => {
     try {
       await api.post('/sessions', { demande_id: d.id });
-      showToast(`🎉 Aide proposée à ${d.eleve_prenom} ! +50 pts à venir`);
+      showToast(`🎉 Aide proposée à ${d.eleve_prenom} ! Points à venir selon la note (20-100 pts)`);
       confetti();
       fetchDemandes(filter === 'all' ? null : filter);
     } catch (err) {
@@ -104,7 +104,7 @@ const DemandesComponent = forwardRef(function Demandes({ showToast, confetti }, 
       <div className="hero">
         <div className="hero-text">
           <h2>Quelqu'un a besoin de toi ! 🙌</h2>
-          <p>Chaque aide que tu donnes, c'est +50 pts vers ton certificat. La communauté ISEP grandit grâce à toi.</p>
+          <p>Chaque aide que tu donnes te rapporte 20-100 pts selon la note (mauvaise: 20pts, moyenne: 50pts, bonne: 75pts, excellente: 100pts). La communauté ISEP grandit grâce à toi.</p>
         </div>
         <div className="hero-stat">
           <div className="big">{demandes.length}</div>

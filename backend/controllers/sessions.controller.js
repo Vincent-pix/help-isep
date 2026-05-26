@@ -34,11 +34,11 @@ const proposerAide = async (req, res) => {
       [demande_id, req.user.id]
     );
 
-    // Mettre la demande en "en_cours"
-    await db.query(
-      'UPDATE demandes_aide SET statut = "en_cours" WHERE id = ?',
-      [demande_id]
-    );
+    // NE PAS changer le statut de la demande - rester "ouverte" pour que d'autres tuteurs puissent proposer
+    // await db.query(
+    //   'UPDATE demandes_aide SET statut = "en_cours" WHERE id = ?',
+    //   [demande_id]
+    // );
 
     // Créer une notification pour l'élève
     await db.query(
@@ -281,6 +281,21 @@ const validerAide = async (req, res) => {
       return res.status(409).json({ message: 'Cette aide est déjà validée' });
     }
 
+    // Récupérer la note d'évaluation pour calculer les points
+    const [evalData] = await db.query(
+      'SELECT note FROM evaluations WHERE session_id = ?',
+      [req.params.id]
+    );
+    
+    let points_gagnes = 30;
+    if (evalData.length > 0) {
+      const note = evalData[0].note;
+      if (note <= 2) points_gagnes = 20;
+      else if (note === 3) points_gagnes = 50;
+      else if (note === 4) points_gagnes = 75;
+      else if (note === 5) points_gagnes = 100;
+    }
+
     await db.query(
       'UPDATE sessions_aide SET aide_validee_par_eleve = true, date_validation = NOW() WHERE id = ?',
       [req.params.id]
@@ -293,10 +308,10 @@ const validerAide = async (req, res) => {
 
     await db.query(
       'INSERT INTO notifications (utilisateur_id, type, message, lien) VALUES (?,?,?,?)',
-      [current.tuteur_id, 'aide_validee', 'Ton aide a été validée : +50 points 🎉', `/sessions/${req.params.id}`]
+      [current.tuteur_id, 'aide_validee', `Ton aide a été validée : +${points_gagnes} points 🎉`, `/sessions/${req.params.id}`]
     );
 
-    res.json({ message: 'Aide validée, points attribués au tuteur' });
+    res.json({ message: 'Aide validée, points attribués au tuteur', points_gagnes });
   } catch (err) {
     console.error('Erreur validerAide :', err);
     res.status(500).json({ message: 'Erreur serveur' });
