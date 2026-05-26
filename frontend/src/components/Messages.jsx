@@ -100,6 +100,25 @@ export default function Messages() {
 
   return (
     <div className="msg-layout">
+      {/* Menu mobile pour afficher/masquer conversations */}
+      {!activeSession && (
+        <button 
+          className="msg-menu-btn"
+          onClick={() => setShowConvList(true)}
+          style={{ 
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: 16,
+            padding: '8px 12px',
+            color: 'var(--text)',
+            marginBottom: 12
+          }}
+        >
+          ☰ Afficher conversations
+        </button>
+      )}
+      
       {/* Liste des conversations */}
       <div className={`conv-list ${showConvList ? 'show' : ''}`}>
         {loading ? (

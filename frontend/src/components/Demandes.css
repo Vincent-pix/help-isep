@@ -126,35 +126,49 @@
 @media (max-width: 768px) {
   .msg-layout {
     grid-template-columns: 1fr;
-    height: calc(100vh - 62px - 44px - 16px);
-    gap: 8px;
+    height: auto;
+    min-height: calc(100vh - 150px);
+    gap: 12px;
   }
   
   .conv-list {
-    display: none;
-    position: absolute;
-    top: 62px;
-    left: 0;
-    width: 100%;
-    max-height: 50vh;
+    display: none !important;
+    flex-direction: column;
+    gap: 3px;
+    max-height: 60vh;
+    overflow-y: auto;
     background: var(--white);
-    border-radius: 0;
-    z-index: 100;
-    gap: 0;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 0;
   }
   
   .conv-list.show {
-    display: flex;
+    display: flex !important;
+  }
+  
+  .conv-item {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .conv-item:last-child {
+    border-bottom: none;
   }
   
   .chat-panel {
-    border-radius: 0;
-    border: none;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    display: flex !important;
+    flex-direction: column;
   }
   
   .chat-body {
     padding: 12px 14px;
     gap: 6px;
+    min-height: 200px;
   }
   
   .bubble {
@@ -180,16 +194,6 @@
   
   .chat-top {
     padding: 12px 14px;
-  }
-  
-  /* Afficher le bouton menu sur mobile */
-  .chat-top button {
-    display: block !important;
-  }
-  
-  /* Afficher le bouton de sélection de conversation */
-  [onclick*="setShowConvList"] {
-    display: block !important;
   }
 }
 

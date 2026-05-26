@@ -200,16 +200,15 @@ export function Evaluations({ showToast }) {
 
 // ── CERTIFICAT ────────────────────────────────────────────────────────────────
 export function Certificat({ showToast, confetti }) {
-  const [sessions, setSessions] = useState([]);
+  const [profile, setProfile]   = useState(null);
   const [stats, setStats]       = useState({ total: 0, moyenne: null });
 
   useEffect(() => {
-    api.get('/sessions/mes').then(res => setSessions(res.data)).catch(() => {});
+    api.get('/auth/profile').then(res => setProfile(res.data)).catch(() => {});
     api.get('/evaluations/mes').then(res => setStats(res.data.stats || {})).catch(() => {});
   }, []);
 
-  const validatedSessions = sessions.filter((s) => s.aide_validee_par_eleve);
-  const pts = Math.min((validatedSessions.length * 50), 1000);
+  const pts = Math.min(profile?.points_total || 0, 1000);
   const pct = Math.round((pts / 1000) * 100);
 
   const levels = [
@@ -219,9 +218,9 @@ export function Certificat({ showToast, confetti }) {
   ];
 
   const tasks = [
-    { done: sessions.length > 0,  text: "S'inscrire comme tuteur",          pts: '+100 pts' },
-    { done: sessions.length >= 5, text: 'Donner 5 sessions',                pts: '+250 pts' },
-    { done: (stats.moyenne || 0) >= 4.5, text: 'Maintenir note ≥ 4.5',     pts: '+150 pts' },
+    { done: profile?.note_moyenne !== undefined && profile?.note_moyenne !== null,  text: "S'inscrire comme tuteur",          pts: '+100 pts' },
+    { done: (profile?.sessions_count || 0) >= 5, text: 'Donner 5 sessions',                pts: '+250 pts' },
+    { done: (profile?.note_moyenne || 0) >= 4.5, text: 'Maintenir note ≥ 4.5',     pts: '+150 pts' },
     { done: false,                 text: 'Aider sur 3 matières différentes', pts: '+100 pts' },
   ];
 

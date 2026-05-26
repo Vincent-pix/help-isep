@@ -109,11 +109,12 @@ const getConversations = async (req, res) => {
   }
 };
 
-// GET /api/messages/contacts — liste unique des personnes contactées avec dernière date
+// GET /api/messages/contacts — liste unique des personnes contactées avec session_id
 const getContacts = async (req, res) => {
   try {
     const [rows] = await db.query(`
       SELECT DISTINCT
+        s.id AS session_id,
         u.id AS utilisateur_id,
         u.nom,
         u.prenom,
@@ -123,7 +124,7 @@ const getContacts = async (req, res) => {
       JOIN demandes_aide d ON d.id = s.demande_id
       JOIN utilisateurs u ON u.id = IF(d.eleve_id = ?, s.tuteur_id, d.eleve_id)
       WHERE d.eleve_id = ? OR s.tuteur_id = ?
-      GROUP BY u.id
+      GROUP BY s.id
       ORDER BY MAX(m.date_envoi) DESC
     `, [req.user.id, req.user.id, req.user.id]);
 

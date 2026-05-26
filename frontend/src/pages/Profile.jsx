@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import './Profile.css';
 
-export default function Profile() {
+export default function Profile({ onNavigate }) {
   const { user } = useAuth();
   const [profile, setProfile] = useState(null);
   const [editing, setEditing] = useState(false);
@@ -188,7 +188,7 @@ export default function Profile() {
           ) : (
             <div className="contacts-list">
               {contacts.map((contact) => (
-                <div key={contact.utilisateur_id} className="contact-item">
+                <div key={contact.session_id} className="contact-item">
                   <div className="contact-avatar">
                     {contact.prenom?.charAt(0).toUpperCase()}
                   </div>
@@ -196,7 +196,15 @@ export default function Profile() {
                     <p className="contact-name">{contact.prenom} {contact.nom}</p>
                     <p className="contact-last">Dernier message: {new Date(contact.dernier_message).toLocaleDateString('fr-FR')}</p>
                   </div>
-                  <button className="btn-message">💬</button>
+                  <button 
+                    className="btn-message"
+                    onClick={() => {
+                      localStorage.setItem('preferredSessionId', contact.session_id);
+                      onNavigate('messages');
+                    }}
+                  >
+                    💬
+                  </button>
                 </div>
               ))}
             </div>

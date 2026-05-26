@@ -120,6 +120,7 @@ export default function Dashboard() {
               onClick={() => {
                 if (active === 'demandes' && demandesRef.current) demandesRef.current.openModal();
                 if (active === 'tuteurs' && tueursRef.current) tueursRef.current.openModal();
+                if (active === 'messages') setActive('tuteurs'); // Nouveau message = voir tuteurs dispo
               }}
               style={{ padding: '8px 16px', borderRadius: '8px', fontSize: 14 }}
             >
@@ -141,7 +142,7 @@ export default function Dashboard() {
           {active === 'mes-demandes' && <MesDemandes showToast={showToast} />}
           {active === 'evaluations' && <Evaluations showToast={showToast} />}
           {active === 'certificat'  && <Certificat  showToast={showToast} confetti={confetti} />}
-          {active === 'profil'      && <Profile     />}
+          {active === 'profil'      && <Profile     onNavigate={setActive} />}
         </div>
       </div>
 
