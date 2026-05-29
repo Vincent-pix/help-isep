@@ -6,6 +6,7 @@ import Messages from '../components/Messages';
 import MesDemandes from '../components/MesDemandes';
 import { Evaluations, Certificat } from '../components/EvCert';
 import Profile from './Profile';
+import AdminPanel from '../components/AdminPanel';
 import api from '../services/api';
 import './Dashboard.css';
 
@@ -17,6 +18,7 @@ const SCREENS = {
   evaluations: { title: 'Mes évaluations',     icon: '⭐', bg: '#FDF6E3',             btn: '📊 Voir stats' },
   certificat:  { title: 'Certificat Helper',   icon: '🏅', bg: 'var(--gold-light)',   btn: '📥 Télécharger' },
   profil:      { title: 'Mon Profil',          icon: '👤', bg: 'var(--bg)',           btn: null },
+  admin:       { title: 'Administration',      icon: '👑', bg: 'var(--orange-light)', btn: null },
 };
 
 export default function Dashboard() {
@@ -118,7 +120,7 @@ export default function Dashboard() {
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4h12M2 8h12M2 12h12" strokeLinecap="round" /></svg>
             </button>
             <div className="page-icon" style={{ background: screen.bg }}>{screen.icon}</div>
-            <div>
+            <div style={{ minWidth: 0 }}>
               <div className="page-title">{screen.title}</div>
               <div className="page-sub">{subTitle || '…'}</div>
             </div>
@@ -126,13 +128,12 @@ export default function Dashboard() {
         <div className="topbar-right">
           {screen.btn && (
             <button 
-              className="btn-primary" 
+              className="btn-primary topbar-btn" 
               onClick={() => {
                 if (active === 'demandes' && demandesRef.current) demandesRef.current.openModal();
                 if (active === 'tuteurs' && tueursRef.current) tueursRef.current.openModal();
                 if (active === 'messages') setActive('tuteurs'); // Nouveau message = voir tuteurs dispo
               }}
-              style={{ padding: '8px 16px', borderRadius: '8px', fontSize: 14 }}
             >
               {screen.btn}
             </button>
@@ -153,6 +154,7 @@ export default function Dashboard() {
           {active === 'evaluations' && <Evaluations showToast={showToast} />}
           {active === 'certificat'  && <Certificat  showToast={showToast} confetti={confetti} />}
           {active === 'profil'      && <Profile     onNavigate={setActive} />}
+          {active === 'admin'       && <AdminPanel  showToast={showToast} />}
         </div>
       </div>
 

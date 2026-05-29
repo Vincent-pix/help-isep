@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
 import './Sidebar.css';
 
 const NAV = [
@@ -36,10 +38,34 @@ const NAV = [
 export default function Sidebar({ active, onNav, isOpen, onClose, notifCount = 0 }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [profileData, setProfileData] = useState(null);
+
+  useEffect(() => {
+    const fetchPoints = async () => {
+      try {
+        const res = await api.get('/auth/profile');
+        setProfileData(res.data);
+      } catch {}
+    };
+    fetchPoints();
+  }, [active]);
+
+  const points = profileData?.points_total || 0;
+  const pct = Math.min(Math.round((points / 1000) * 100), 100);
 
   const initials = user
     ? `${user.prenom?.[0] || ''}${user.nom?.[0] || ''}`.toUpperCase()
     : '?';
+
+  const menuItems = [...NAV];
+  if (user?.role === 'admin') {
+    menuItems.push({
+      id: 'admin',
+      label: 'Administration',
+      section: 'Admin',
+      icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7"><path d="M4 15V9h8v6M2 3h12v12H2V3z" /><path d="M6 3v3h4V3" strokeLinecap="round" /></svg>
+    });
+  }
 
   return (
     <>
@@ -65,14 +91,14 @@ export default function Sidebar({ active, onNav, isOpen, onClose, notifCount = 0
       <div className="xp-block">
         <div className="xp-head">
           <span className="xp-label">⚡ Points Helper</span>
-          <span className="xp-pts">En cours…</span>
+          <span className="xp-pts">{points} pts</span>
         </div>
-        <div className="xp-track"><div className="xp-fill" style={{ width: '20%' }} /></div>
+        <div className="xp-track"><div className="xp-fill" style={{ width: `${pct}%` }} /></div>
         <div className="xp-sub">Complète des sessions pour gagner des pts 🏅</div>
       </div>
 
       <nav>
-        {NAV.map(item => (
+        {menuItems.map(item => (
           <div key={item.id}>
             {item.section && <div className="nav-sec">{item.section}</div>}
             <div

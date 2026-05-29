@@ -83,6 +83,11 @@
   gap: 12px;
 }
 
+.topbar-btn {
+  padding: 8px 16px;
+  font-size: 13.5px;
+}
+
 .content {
   flex: 1;
   overflow-y: auto;
@@ -108,10 +113,7 @@
   }
   
   .page-icon {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-    border-radius: 8px;
+    display: none; /* Masque l'icône sur mobile pour gagner de l'espace */
   }
   
   .page-title {
@@ -127,6 +129,12 @@
   
   .topbar-right {
     gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .topbar-btn {
+    padding: 6px 12px;
+    font-size: 12px;
   }
   
   .content {
