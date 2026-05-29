@@ -188,31 +188,6 @@ input,textarea,select{font-family:'Outfit',sans-serif;}
     font-size: 16px;
   }
 }
-    padding: 8px 14px;
-    font-size: 12.5px;
-  }
-  
-  .modal {
-    width: 95vw;
-    padding: 20px;
-  }
-  
-  .modal h3 {
-    font-size: 16px;
-  }
-  
-  .form-row input,
-  .form-row textarea,
-  .form-row select {
-    font-size: 16px;
-    padding: 10px 12px;
-  }
-  
-  /* Évite le zoom en focus sur iOS */
-  input, textarea, select {
-    font-size: 16px !important;
-  }
-}
 
 /* ── MOBILE (480px et moins) ── */
 @media (max-width: 480px) {
