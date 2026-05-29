@@ -17,14 +17,18 @@
   --text:#14172B;
   --text2:#5A5C72;
   --text3:#9496AB;
-  --border:rgba(20,23,43,0.1);
+  --border:rgba(20,23,43,0.06);
   --green:#18A058;
   --green-light:#E6F7EE;
   --gold:#D4A017;
   --gold-light:#FDF6E3;
   --radius:12px;
   --radius-lg:18px;
-  --sidebar:230px;
+  --sidebar:260px;
+  --shadow-sm:0 2px 8px rgba(20,23,43,0.04);
+  --shadow-md:0 8px 24px rgba(20,23,43,0.08);
+  --shadow-lg:0 16px 40px rgba(20,23,43,0.12);
+  --transition:all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html,body{
@@ -33,32 +37,37 @@ html,body{
   font-size:14px;
   color:var(--text);
   background:var(--bg);
+  -webkit-font-smoothing:antialiased;
 }
 
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:4px;}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-thumb{background:rgba(20,23,43,0.15);border-radius:4px;}
+::-webkit-scrollbar-track{background:transparent;}
 
-button{font-family:'Outfit',sans-serif;}
+button{font-family:'Outfit',sans-serif;transition:var(--transition);}
 input,textarea,select{font-family:'Outfit',sans-serif;}
 
 /* ── LAYOUT ── */
-.app{display:flex;height:100vh;overflow:hidden;}
+.app{display:flex;height:100vh;overflow:hidden;position:relative;}
 
 /* ── BUTTONS ── */
 .btn-primary{
   background:var(--orange);color:white;border:none;
-  border-radius:var(--radius);padding:9px 18px;
+  border-radius:var(--radius);padding:10px 20px;
   font-size:13px;font-weight:600;cursor:pointer;
-  transition:all 0.15s;display:flex;align-items:center;gap:6px;
+  transition:var(--transition);display:flex;align-items:center;gap:6px;
+  box-shadow:0 4px 14px rgba(245,112,10,0.2);
 }
-.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(245,112,10,0.3);}
+.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(245,112,10,0.3);}
+.btn-primary:active{transform:translateY(0);}
 
 .btn-sec{
-  background:var(--bg);color:var(--text2);border:1px solid var(--border);
-  border-radius:var(--radius);padding:9px 16px;
-  font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;
+  background:var(--white);color:var(--text2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:10px 18px;
+  font-size:13px;font-weight:500;cursor:pointer;transition:var(--transition);
+  box-shadow:var(--shadow-sm);
 }
-.btn-sec:hover{background:var(--bg2);}
+.btn-sec:hover{background:var(--bg);color:var(--text);border-color:var(--text3);}
 
 .btn-ghost{
   background:none;border:1.5px solid var(--border);

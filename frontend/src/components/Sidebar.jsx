@@ -33,7 +33,7 @@ const NAV = [
   },
 ];
 
-export default function Sidebar({ active, onNav, notifCount = 0 }) {
+export default function Sidebar({ active, onNav, isOpen, onClose, notifCount = 0 }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -42,14 +42,17 @@ export default function Sidebar({ active, onNav, notifCount = 0 }) {
     : '?';
 
   return (
-    <aside className="sidebar">
-      <div className="sb-logo">
-        <div className="sb-logo-icon">🎓</div>
-        <div>
-          <div className="sb-app-name">Help'ISEP</div>
-          <div className="sb-tagline">Entraide étudiante 🚀</div>
+    <>
+      <div className={`sidebar-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
+      <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+        <div className="sb-logo">
+          <div className="sb-logo-icon">🎓</div>
+          <div>
+            <div className="sb-app-name">Help'ISEP</div>
+            <div className="sb-tagline">Entraide étudiante 🚀</div>
+          </div>
+          <button className="sb-close-btn" onClick={onClose} aria-label="Fermer le menu">×</button>
         </div>
-      </div>
 
       <div className="sb-user">
         <div className="sb-av">{initials}</div>
@@ -99,5 +102,6 @@ export default function Sidebar({ active, onNav, notifCount = 0 }) {
         </button>
       </div>
     </aside>
+    </>
   );
 }

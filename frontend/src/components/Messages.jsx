@@ -99,28 +99,9 @@ export default function Messages() {
   };
 
   return (
-    <div className="msg-layout">
-      {/* Menu mobile pour afficher/masquer conversations */}
-      {!activeSession && (
-        <button 
-          className="msg-menu-btn"
-          onClick={() => setShowConvList(true)}
-          style={{ 
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: 16,
-            padding: '8px 12px',
-            color: 'var(--text)',
-            marginBottom: 12
-          }}
-        >
-          ☰ Afficher conversations
-        </button>
-      )}
-      
+    <div className={`msg-layout ${activeSession ? 'chat-active' : ''}`}>
       {/* Liste des conversations */}
-      <div className={`conv-list ${showConvList ? 'show' : ''}`}>
+      <div className="conv-list">
         {loading ? (
           <div className="loading-state">Chargement…</div>
         ) : conversations.length === 0 ? (
@@ -153,42 +134,27 @@ export default function Messages() {
         {!activeConv ? (
           <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12, color: 'var(--text3)' }}>
             <div style={{ fontSize: 40 }}>💬</div>
-            <p style={{ fontSize: 13 }}>Sélectionne une conversation</p>
-            <button 
-              className="btn-primary" 
-              onClick={() => setShowConvList(!showConvList)}
-              style={{ display: 'none' }} // Visible que sur mobile via CSS
-            >
-              Afficher les conversations
-            </button>
+            <p style={{ fontSize: 13 }}>Sélectionne une conversation pour commencer à échanger</p>
           </div>
         ) : (
           <>
-            <div className="chat-top" style={{ justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1 }}>
+            <div className="chat-top">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 0 }}>
+                <button className="chat-back-btn" onClick={() => setActiveSession(null)} aria-label="Retour aux conversations">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M10 2L4 8l6 6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </button>
                 <div className="av av-md av-b">
                   {initials(activeConv.interlocuteur_nom, activeConv.interlocuteur_prenom)}
                 </div>
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <div className="chat-name-el">
                     {activeConv.interlocuteur_prenom} {activeConv.interlocuteur_nom}
                   </div>
-                  <div className="chat-sub-el">{activeConv.demande_titre}</div>
+                  <div className="chat-sub-el" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {activeConv.demande_titre}
+                  </div>
                 </div>
               </div>
-              <button 
-                onClick={() => setShowConvList(!showConvList)}
-                style={{ 
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: 20,
-                  display: 'none', // Visible que sur mobile
-                  marginLeft: 'auto'
-                }}
-              >
-                ☰
-              </button>
               <div className="online" />
             </div>
 

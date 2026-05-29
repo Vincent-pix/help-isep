@@ -21,6 +21,7 @@ const SCREENS = {
 
 export default function Dashboard() {
   const [active, setActive]           = useState('demandes');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [toast, setToast]             = useState('');
   const [toastVisible, setToastVisible] = useState(false);
   const [notifCount, setNotifCount]   = useState(0);
@@ -29,6 +30,12 @@ export default function Dashboard() {
   const tueursRef = useRef(null);
 
   const screen = SCREENS[active];
+
+  // handleNav ferme automatiquement le menu tiroir sur mobile
+  const handleNav = (id) => {
+    setActive(id);
+    setIsSidebarOpen(false);
+  };
 
   // Charger le nombre de notifications non lues
   useEffect(() => {
@@ -96,17 +103,20 @@ export default function Dashboard() {
 
   const openMessagesForTutor = (sessionId) => {
     localStorage.setItem('preferredSessionId', String(sessionId));
-    setActive('messages');
+    handleNav('messages');
     showToast('💬 Conversation ouverte');
   };
 
   return (
     <div className="app">
-      <Sidebar active={active} onNav={setActive} notifCount={notifCount} />
+      <Sidebar active={active} onNav={handleNav} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} notifCount={notifCount} />
 
       <div className="main">
         <div className="topbar">
           <div className="topbar-left">
+            <button className="menu-toggle-btn" onClick={() => setIsSidebarOpen(true)} aria-label="Ouvrir le menu">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4h12M2 8h12M2 12h12" strokeLinecap="round" /></svg>
+            </button>
             <div className="page-icon" style={{ background: screen.bg }}>{screen.icon}</div>
             <div>
               <div className="page-title">{screen.title}</div>

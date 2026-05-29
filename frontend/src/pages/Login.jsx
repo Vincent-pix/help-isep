@@ -40,6 +40,10 @@ export default function Login() {
 
   return (
     <div className="login-page">
+      <div className="bg-bubbles">
+        <div className="bubble-1"></div>
+        <div className="bubble-2"></div>
+      </div>
       <div className="login-card">
         <div className="login-logo">
           <div className="login-logo-icon">🎓</div>
