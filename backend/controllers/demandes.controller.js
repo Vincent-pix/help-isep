@@ -1,6 +1,6 @@
 const db = require('../config/db');
 
-// GET /api/demandes — toutes les demandes ouvertes
+// GET /api/demandes — toutes les demandes ouvertes (sauf les siennes)
 const getDemandes = async (req, res) => {
   try {
     const { matiere_id, urgence } = req.query;
@@ -10,9 +10,9 @@ const getDemandes = async (req, res) => {
       FROM demandes_aide d
       JOIN matieres m ON m.id = d.matiere_id
       JOIN utilisateurs u ON u.id = d.eleve_id
-      WHERE d.statut = 'ouverte'
+      WHERE d.statut = 'ouverte' AND d.eleve_id != ?
     `;
-    const params = [];
+    const params = [req.user.id];
     if (matiere_id) { query += ' AND d.matiere_id = ?'; params.push(matiere_id); }
     if (urgence)    { query += ' AND d.urgence = ?';    params.push(urgence); }
     query += ' ORDER BY FIELD(d.urgence,"haute","normale","faible"), d.date_creation DESC';

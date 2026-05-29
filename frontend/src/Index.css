@@ -123,31 +123,71 @@ input,textarea,select{font-family:'Outfit',sans-serif;}
 .form-row textarea{resize:vertical;min-height:85px;}
 .modal-btns{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;}
 
-@media (max-width: 900px){
-  :root{
-    --sidebar:100%;
-  }
-  .app{
-    flex-direction:column;
-    height:auto;
-    min-height:100vh;
-    overflow:visible;
-  }
-  .toast{
-    max-width:92vw;
-    white-space:normal;
-    text-align:center;
-  }
-}
-
-/* ── TABLET (768px et moins) ── */
+/* ── RESPONSIVE MOBILE ── */
 @media (max-width: 768px) {
   :root {
-    --radius: 10px;
-    --radius-lg: 14px;
+    --radius: 12px;
+    --radius-lg: 16px;
+    font-size: 14px;
   }
   
   .btn-primary {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  .btn-sec {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+  
+  .modal {
+    width: 92vw;
+    max-width: 480px;
+    padding: 20px;
+  }
+  
+  .modal h3 {
+    font-size: 16px;
+  }
+  
+  .form-row input,
+  .form-row textarea,
+  .form-row select {
+    padding: 11px 14px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --radius: 10px;
+    --radius-lg: 14px;
+    font-size: 13px;
+  }
+  
+  .btn-primary {
+    padding: 9px 14px;
+    font-size: 12px;
+  }
+  
+  .btn-sec {
+    padding: 7px 12px;
+    font-size: 11.5px;
+  }
+  
+  .modal {
+    width: 95vw;
+    padding: 18px;
+  }
+  
+  .form-row input,
+  .form-row textarea,
+  .form-row select {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+}
     padding: 8px 14px;
     font-size: 12.5px;
   }
